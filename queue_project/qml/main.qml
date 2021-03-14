@@ -186,6 +186,7 @@ Window {
                 anchors.top: topBar.bottom
                 anchors.bottom: parent.bottom
                 anchors.topMargin: 0
+
                 StackView {
                     id: stackView
                     x: 1
@@ -196,7 +197,7 @@ Window {
                     anchors.bottom: parent.bottom
                     anchors.topMargin: 1
                     anchors.leftMargin: 1
-                    initialItem: Qt.resolvedUrl("pages/LoginPage.qml")
+                    initialItem: Qt.resolvedUrl("pages/MenuPage.qml")
                     anchors.rightMargin: 1
                     anchors.bottomMargin: 1
                 }
@@ -327,7 +328,7 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.5;height:720;width:1280}D{i:13}D{i:15}D{i:19;invisible:true}
-D{i:21;invisible:true}D{i:23;invisible:true}D{i:25;invisible:true}D{i:27;invisible:true}
+    D{i:0;formeditorZoom:0.5;height:720;width:1280}D{i:19;invisible:true}D{i:21;invisible:true}
+D{i:23;invisible:true}D{i:25;invisible:true}D{i:27;invisible:true}
 }
 ##^##*/
