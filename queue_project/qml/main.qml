@@ -77,12 +77,37 @@ Window {
             color: "#00000000"
             anchors.fill: parent
 
+
+            Rectangle {
+                id: contents
+                x: -1
+                color: "#ffffff"
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.topMargin: 0
+
+                StackView {
+                    id: stackView
+                    x: 1
+                    y: 36
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    initialItem: Qt.resolvedUrl("pages/LoginPage.qml")
+                }
+            }
+
+
+
             Rectangle {
                 id: topBar
                 x: -1
                 y: -1
                 height: 35
-                color: "#00000000"
+                color: "#f9f9f9"
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
@@ -90,49 +115,10 @@ Window {
                 anchors.rightMargin: 0
                 anchors.leftMargin: 0
 
-                Row {
-                    id: topRowIcons
-                    width: 105
-                    height: 35
-                    anchors.right: parent.right
-                    anchors.rightMargin: 0
-
-                    TopBarButton{
-                        id: minimizeIcon
-                        btnColorClicked: "#dedede"
-                        btnColorMouseOver: "#e5e5e5"
-                        btnColorDefault: "#00000000"
-                        overlayColor: "#000000"
-                        btnIconSource: "images/svg-images/minimize_icon.svg"
-                        onClicked: {
-                            window.showMinimized()
-                            internal.restoreMargins()
-                        }
-                    }
-
-                    TopBarButton {
-                        id: maxresIcon
-                        btnColorClicked: "#dedede"
-                        btnColorDefault: "#00000000"
-                        btnColorMouseOver: "#e5e5e5"
-                        overlayColor: "#000000"
-                        btnIconSource: maxResIcon
-                        onClicked: internal.maxRestore()
-                    }
-
-                    TopBarButton {
-                        id: exitIcon
-                        btnColorClicked: "#dd1025"
-                        btnColorDefault: "#00000000"
-                        btnIconSource: "images/svg-images/close_icon.svg"
-                        overlayColor: "#000000"
-                        btnColorMouseOver: "#e81123"
-                        onClicked: window.close()
-                    }
-                }
-
                 Rectangle {
                     id: titleBar
+                    x: 0
+                    y: 0
                     height: 35
                     color: "#00000000"
                     anchors.left: parent.left
@@ -175,27 +161,51 @@ Window {
                         anchors.leftMargin: 5
                     }
                 }
-            }
 
-            Rectangle {
-                id: contents
-                x: -1
-                color: "#ffffff"
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.top: topBar.bottom
-                anchors.bottom: parent.bottom
-                anchors.topMargin: 0
-
-                StackView {
-                    id: stackView
-                    x: 1
-                    y: 36
-                    anchors.left: parent.left
+                Row {
+                    id: topRowIcons
+                    x: 1155
+                    width: 105
+                    height: 35
                     anchors.right: parent.right
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    initialItem: Qt.resolvedUrl("pages/MenuPage.qml")
+                    anchors.topMargin: 0
+                    anchors.bottomMargin: 0
+                    anchors.rightMargin: 0
+
+                    TopBarButton{
+                        id: minimizeIcon
+                        btnColorClicked: "#dedede"
+                        btnColorMouseOver: "#e5e5e5"
+                        btnColorDefault: "#00000000"
+                        overlayColor: "#000000"
+                        btnIconSource: "images/svg-images/minimize_icon.svg"
+                        onClicked: {
+                            window.showMinimized()
+                            internal.restoreMargins()
+                        }
+                    }
+
+                    TopBarButton {
+                        id: maxresIcon
+                        btnColorClicked: "#dedede"
+                        btnColorDefault: "#00000000"
+                        btnColorMouseOver: "#e5e5e5"
+                        overlayColor: "#000000"
+                        btnIconSource: maxResIcon
+                        onClicked: internal.maxRestore()
+                    }
+
+                    TopBarButton {
+                        id: exitIcon
+                        btnColorClicked: "#dd1025"
+                        btnColorDefault: "#00000000"
+                        btnIconSource: "images/svg-images/close_icon.svg"
+                        overlayColor: "#000000"
+                        btnColorMouseOver: "#e81123"
+                        onClicked: window.close()
+                    }
                 }
             }
 
@@ -211,8 +221,8 @@ Window {
                 DragHandler {
                     target: null
                     onActiveChanged: if(active){
-                                        window.startSystemResize(Qt.RightEdge | Qt.BottomEdge)
-                                    }
+                                         window.startSystemResize(Qt.RightEdge | Qt.BottomEdge)
+                                     }
                 }
 
                 Image {
@@ -237,6 +247,9 @@ Window {
                 anchors.bottomMargin: 0
                 anchors.rightMargin: 0
             }
+
+
+
         }
     }
 
@@ -324,7 +337,7 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.5;height:720;width:1280}D{i:19;invisible:true}D{i:21;invisible:true}
+    D{i:0;formeditorZoom:0.5;height:720;width:1280}D{i:11}D{i:19;invisible:true}D{i:21;invisible:true}
 D{i:23;invisible:true}D{i:25;invisible:true}D{i:27;invisible:true}
 }
 ##^##*/

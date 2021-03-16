@@ -9,6 +9,23 @@ Item {
         color: "#ffffff"
         anchors.fill: parent
 
+
+        Image {
+            id: image
+            anchors.fill: parent
+            source: "../images/logos/freestocks-I_pOqP6kCOI-unsplash.jpg"
+            anchors.leftMargin: 400
+            fillMode: Image.PreserveAspectCrop
+
+            Rectangle {
+                id: rectangle
+                opacity: 0.3
+                color: "#f9f9f9"
+                anchors.fill: parent
+            }
+        }
+
+
         Rectangle {
             id: loginFields
             width: 400
@@ -17,6 +34,7 @@ Item {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
+            clip: false
             anchors.leftMargin: 0
             anchors.bottomMargin: 0
             anchors.topMargin: 0
@@ -24,9 +42,9 @@ Item {
             Rectangle {
                 id: logoBar
                 x: 100
-                y: 25
+                y: 50
                 width: 311
-                height: 139
+                height: 135
                 color: "#00000000"
                 anchors.horizontalCenter: parent.horizontalCenter
 
@@ -223,9 +241,9 @@ Item {
                 colorMouseOver: "#bc252a"
                 colorDefault: loginButton.enabled ? "#d13639" : "#f9f9f9"
                 enabled: if(userField.text != "" && passField.text != ""){
-                            true
+                             true
                          } else{
-                            false
+                             false
                          }
                 anchors.horizontalCenterOffset: 0
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -250,11 +268,13 @@ Item {
                 }
             }
         }
+
+
     }
 }
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:1.1;height:720;width:1280}D{i:13}D{i:16}D{i:19}
+    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}D{i:3}D{i:2}
 }
 ##^##*/
