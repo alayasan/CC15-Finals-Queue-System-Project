@@ -24,9 +24,9 @@ Item {
             Rectangle {
                 id: logoBar
                 x: 100
-                y: 50
-                width: 200
-                height: 75
+                y: 25
+                width: 311
+                height: 139
                 color: "#00000000"
                 anchors.horizontalCenter: parent.horizontalCenter
 
@@ -71,7 +71,7 @@ Item {
                 anchors.top: logoBar.bottom
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                anchors.topMargin: 50
+                anchors.topMargin: 25
                 anchors.horizontalCenterOffset: 0
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.pointSize: 20
@@ -85,7 +85,7 @@ Item {
                 height: 40
                 anchors.top: signInText.bottom
                 placeholderText: "USERNAME"
-                anchors.topMargin: 35
+                anchors.topMargin: 25
                 anchors.horizontalCenterOffset: 0
                 anchors.horizontalCenter: parent.horizontalCenter
             }
@@ -165,13 +165,14 @@ Item {
             Label {
                 id: cantSignIn
                 x: 60
-                y: 343
                 width: 89
                 height: 19
                 color: underbtn.hovered ? "#11111" : "#b2b2b2"
                 text: qsTr("can't sign in?")
+                anchors.top: passField.bottom
                 font.letterSpacing: 0.5
                 verticalAlignment: Text.AlignVCenter
+                anchors.topMargin: 5
                 font.capitalization: Font.AllUppercase
                 font.family: "Segoe UI"
                 font.bold: true
@@ -180,7 +181,6 @@ Item {
                 Button{
                     id: underbtn
                     anchors.fill: parent
-                    anchors.rightMargin: 0
                     background: Rectangle{
                         color: "#00000000"
                     }
@@ -190,13 +190,14 @@ Item {
             Label {
                 id: createAccnt
                 x: 60
-                y: 364
                 width: 104
                 height: 19
                 color: underbtn1.hovered ? "#11111" : "#b2b2b2"
                 text: qsTr("create account")
+                anchors.top: cantSignIn.bottom
                 font.letterSpacing: 0.5
                 verticalAlignment: Text.AlignVCenter
+                anchors.topMargin: 0
                 font.family: "Segoe UI"
                 font.bold: true
                 font.pointSize: 8
@@ -213,10 +214,11 @@ Item {
             CustomButton{
                 id: loginButton
                 x: 143
-                y: 440
                 width: 70
                 height: 70
                 text: ""
+                anchors.top: passField.bottom
+                anchors.topMargin: 100
                 colorPressed: "#bc252a"
                 colorMouseOver: "#bc252a"
                 colorDefault: loginButton.enabled ? "#d13639" : "#f9f9f9"
@@ -253,6 +255,6 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:0.66;height:720;width:1280}D{i:13}D{i:16}
+    D{i:0;autoSize:true;formeditorZoom:1.1;height:720;width:1280}D{i:13}D{i:16}D{i:19}
 }
 ##^##*/

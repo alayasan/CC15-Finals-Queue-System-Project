@@ -1,3 +1,6 @@
 {
-    "files": ["main.py","qml/pages/MenuPage.qml","main.qml","qml/components/CustomButton.qml","../../Queueing_Project/qml/controls/MenuButton.qml","qml/pages/SettingsPage.qml","qml/components/MenuButton.qml","qml/pages/DashboardPage.qml","qml/components/TopBarButton.qml","qml/components/CustomTextField.qml","qml/pages/TaskPage.qml","qml/main.qml","qml/pages/AppointmentPage.qml","qml/pages/ReservationPage.qml","qml/components/LeftMenuButton.qml","qml/pages/LoginPage.qml","../../Queueing_Project/qml/controls/LeftMenuButton.qml","qml/pages/LogoutPage.qml"]
-}
+    "files": ["main.py","qml/pages/MenuPage.qml","main.qml","qml/components/CustomButton.qml","../../Queueing_Project/qml/controls/MenuButton.qml","qml/pages/SettingsPage.qml","qml/components/MenuButton.qml","qml/pages/DashboardPage.qml","qml/components/TopBarButton.qml","qml/components/CustomTextField.qml","qml/pages/TaskPage.qml","qml/main.qml","qml/pages/AppointmentPage.qml","qml/pages/ReservationPage.qml","qml/components/LeftMenuButton.qml","qml/pages/LoginPage.qml","../../Queueing_Project/qml/controls/LeftMenuButton.qml","qml/pages/LogoutPage.qml"],
+    "qmlImportPaths": [
+            "./imports"
+        ]
+    }

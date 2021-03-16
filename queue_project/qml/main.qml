@@ -195,11 +195,7 @@ Window {
                     anchors.right: parent.right
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    anchors.topMargin: 1
-                    anchors.leftMargin: 1
                     initialItem: Qt.resolvedUrl("pages/MenuPage.qml")
-                    anchors.rightMargin: 1
-                    anchors.bottomMargin: 1
                 }
             }
 
