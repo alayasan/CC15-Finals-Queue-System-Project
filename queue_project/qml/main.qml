@@ -84,7 +84,7 @@ Window {
                 color: "#ffffff"
                 anchors.left: parent.left
                 anchors.right: parent.right
-                anchors.top: parent.top
+                anchors.top: topBar.bottom
                 anchors.bottom: parent.bottom
                 anchors.topMargin: 0
 
@@ -96,7 +96,7 @@ Window {
                     anchors.right: parent.right
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    initialItem: Qt.resolvedUrl("pages/LoginPage.qml")
+                    initialItem: Qt.resolvedUrl("pages/MenuPage.qml")
                 }
             }
 
@@ -337,7 +337,7 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.5;height:720;width:1280}D{i:11}D{i:19;invisible:true}D{i:21;invisible:true}
+    D{i:0;formeditorZoom:0.5;height:720;width:1280}D{i:19;invisible:true}D{i:21;invisible:true}
 D{i:23;invisible:true}D{i:25;invisible:true}D{i:27;invisible:true}
 }
 ##^##*/

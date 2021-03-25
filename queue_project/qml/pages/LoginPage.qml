@@ -236,9 +236,9 @@ Item {
                 height: 70
                 text: ""
                 anchors.top: passField.bottom
+                colorPressed: loginButton.colorMouseOver
                 anchors.topMargin: 100
-                colorPressed: "#bc252a"
-                colorMouseOver: "#bc252a"
+                colorMouseOver: "#3a53a4"
                 colorDefault: loginButton.enabled ? "#d13639" : "#f9f9f9"
                 enabled: if(userField.text != "" && passField.text != ""){
                              true
