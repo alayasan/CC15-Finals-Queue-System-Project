@@ -3,7 +3,7 @@ import QtQuick 2.0
 ListView {
     id: root
 
- // public
+    // public
     function set(date) { // new Date(2019, 10 - 1, 4)
         selectedDate = new Date(date)
         positionViewAtIndex((selectedDate.getFullYear()) * 12 + selectedDate.getMonth(), ListView.Center) // index from month year
@@ -11,20 +11,21 @@ ListView {
 
     signal clicked(date date);  // onClicked: print('onClicked', date.toDateString())
 
- // private
+    // private
     property date selectedDate: new Date()
 
-    width: 500;  height: 100 // default size
-    snapMode:    ListView.SnapOneItem
-    orientation: Qt.Horizontal
-    clip:        true
+    width: 500
+    height: 100 // default size
+    snapMode: ListView.SnapOneItem
+    orientation: ListView.Horizontal
+    clip: true
 
     model: 3000 * 12 // index == months since January of the year 0
 
     delegate: Item {
-        property int year:      Math.floor(index / 12)
-        property int month:     index % 12 // 0 January
-        property int firstDay:  new Date(year, month, 1).getDay() // 0 Sunday to 6 Saturday
+        property int year: Math.floor(index / 12)
+        property int month: index % 12 // 0 January
+        property int firstDay: new Date(year, month, 1).getDay() // 0 Sunday to 6 Saturday
 
         width: root.width;  height: root.height
 
@@ -36,7 +37,9 @@ ListView {
                     anchors.centerIn: parent
                     text: ['January', 'February', 'March', 'April', 'May', 'June',
                            'July', 'August', 'September', 'October', 'November', 'December'][month] + ' ' + year
-                    font {pixelSize: 0.5 * grid.cellHeight}
+                    font {
+                        pixelSize: 0.5 * grid.cellHeight
+                    }
                 }
             }
 
@@ -62,18 +65,22 @@ ListView {
                         border.color: new Date(year, month, date).toDateString() == selectedDate.toDateString()  &&  textdate.text  &&  day >= 0?
                                       'black': 'transparent' // selected
                         radius: 0.02 * root.height
-                        opacity: !mouseArea.pressed? 1: 0.3  //  pressed state
+                        opacity: !mouseArea.pressed ? 1 : 0.3  //  pressed state
 
                         Text {
                             id: textdate
 
                             anchors.centerIn: parent
                             font.pixelSize: 0.5 * parent.height
-                            font.bold:      new Date(year, month, date).toDateString() == new Date().toDateString() // today
+                            font.bold: new Date(year, month, date).toDateString() == new Date().toDateString() // today
                             text: {
-                                if(day < 0)                                               ['S', 'M', 'T', 'W', 'T', 'F', 'S'][index] // Su-Sa
-                                else if(new Date(year, month, date).getMonth() == month)  date // 1-31
-                                else                                                      ''
+                                if(day < 0) {
+                                    ['S', 'M', 'T', 'W', 'T', 'F', 'S'][index] // Su-Sa
+                                } else if(new Date(year, month, date).getMonth() == month){
+                                    date // 1-31
+                                } else {
+                                    ''
+                                }
                             }
                         }
 
@@ -81,7 +88,7 @@ ListView {
                             id: mouseArea
 
                             anchors.fill: parent
-                            enabled:    text.text  &&  day >= 0
+                            enabled: textdate.text && day >= 0
 
                             onClicked: {
                                 selectedDate = new Date(year, month, date)
@@ -94,5 +101,13 @@ ListView {
         }
     }
 
+
+
      // Component.onCompleted: set(new Date()) // today (otherwise Jan 0000)
 }
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:1.66;height:450;width:450}
+}
+##^##*/

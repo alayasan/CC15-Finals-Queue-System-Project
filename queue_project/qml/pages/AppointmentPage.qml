@@ -168,6 +168,12 @@ Item {
                 onClicked: print('onClicked', Qt.formatDate(date, 'M/d/yyyy'))
             }
         }
+
+        DatePicker{
+            x: 600
+            y: 104
+
+        }
     }
 }
 
@@ -177,6 +183,6 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:1.25;height:720;width:1280}D{i:11}
+    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}
 }
 ##^##*/
