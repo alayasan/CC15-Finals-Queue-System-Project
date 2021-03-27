@@ -14,6 +14,10 @@ Item {
         anchors.topMargin: 0
         clip: true
 
+        TapHandler{
+            onTapped: forceActiveFocus()
+        }
+
         Rectangle {
             id: rectangle
             x: -31
@@ -150,37 +154,32 @@ Item {
                 anchors.topMargin: 25
 
                 CustomTextField{
+                    id: timeField
                     width: 200
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
+                    font.capitalization: Font.AllUppercase
+                    placeholderText: "MM/dd/YYYY"
                     anchors.rightMargin: 25
 
+                    Popup{
+                        visible: timeField.focus ? true : false
+                        y: timeField.height - 1
+                        width: timeField.width
+                        height: contentItem.implicitHeight
+                        padding: 1
+
+                        contentItem: DatePicker{
+                            implicitHeight: 160
+                            Component.onCompleted: set(new Date())
+                            onClicked: timeField.text = Qt.formatDate(date, 'MM/dd/yyyy')
+                        }
+                    }
                 }
             }
-
-            CustomDatePicker{
-                width: 250
-                height: 250
-                anchors.top: date.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.topMargin: 50
-                Component.onCompleted: set(new Date()) // today
-                onClicked: print('onClicked', Qt.formatDate(date, 'M/d/yyyy'))
-            }
-        }
-
-        DatePicker{
-            x: 600
-            y: 104
-
         }
     }
 }
-
-
-
-
-
 /*##^##
 Designer {
     D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}

@@ -95,6 +95,6 @@ Button{
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:2;height:70;width:250}D{i:7}D{i:6}
+    D{i:0;autoSize:true;formeditorZoom:2;height:70;width:250}
 }
 ##^##*/

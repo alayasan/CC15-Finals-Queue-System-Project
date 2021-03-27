@@ -139,8 +139,7 @@ Item {
                     opacity: 0.5
 
                     ColorOverlay{
-                        width: iconEye.width
-                        height: iconEye.height
+                        anchors.fill: parent
                         color: "#000000"
                         antialiasing: false
                         source: iconEye
