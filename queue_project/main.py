@@ -20,7 +20,7 @@ class MainWindow(QObject):
 
     def setTime(self):  # time function
         now = datetime.datetime.now()
-        formatDate = now.strftime("%H:%M:%S  |  %d/%m/%Y")
+        formatDate = now.strftime("%H:%M:%S  |  %m/%d/%Y")
         self.printTime.emit(formatDate)
 
 

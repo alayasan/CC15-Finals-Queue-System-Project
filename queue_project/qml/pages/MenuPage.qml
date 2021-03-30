@@ -230,6 +230,6 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}
+    D{i:0;autoSize:true;formeditorZoom:1.1;height:720;width:1280}
 }
 ##^##*/

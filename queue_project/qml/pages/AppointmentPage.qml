@@ -2,177 +2,335 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
 import "../components"
+import QtQuick.Layouts 1.15
+import Qt.labs.qmlmodels 1.0
 
 Item {
     Rectangle {
         id: bg
         color: "#ffffff"
         anchors.fill: parent
-        anchors.rightMargin: 0
-        anchors.bottomMargin: 0
-        anchors.leftMargin: 0
-        anchors.topMargin: 0
         clip: true
 
         TapHandler{
             onTapped: forceActiveFocus()
         }
 
-        Rectangle {
-            id: rectangle
-            x: -31
-            y: 12
-            width: 458
-            height: 106
-            color: "#3a53a4"
-            radius: 25
 
-            Label {
-                id: label
-                x: 174
-                y: 28
-                color: "#ffffff"
-                text: qsTr("Appointments")
-                anchors.verticalCenter: parent.verticalCenter
-                font.styleName: "Regular"
-                font.bold: true
-                anchors.horizontalCenter: parent.horizontalCenter
-                font.family: "Segoe UI"
-                font.pointSize: 35
+        Rectangle {
+            id: appoint
+            width: bg.width / 3.14159265
+            height: 0.8 * width
+            color: "#ffffff"
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.topMargin: 35
+            anchors.leftMargin: 50
+
+
+            ColumnLayout{
+                id: column
+                anchors.fill: parent
+                spacing: 5
+
+                Rectangle {
+                    id: teacher
+                    width: 400
+                    height: 50
+                    color: "#ffffff"
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+
+                    Label {
+                        id: tchrtext
+                        y: -58
+                        color: "#111111"
+                        text: qsTr("Teacher:")
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 25
+                        font.pointSize: 9
+                        font.family: "Segoe UI"
+                    }
+
+                    CustomDropdown{
+                        x: -186
+                        y: -68
+                        width: 200
+                        height: 40
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        iconColor: "#111111"
+                        delegateColorPressed: "#ededed"
+                        delegateColorMouseOver: "#e7e7e7"
+                        delegateColorDefault: "#f9f9f9"
+                        bgRadius: 3
+                        anchors.rightMargin: 25
+                        unselectText: "ready"
+                    }
+                }
+
+                Rectangle {
+                    id: time
+                    width: 400
+                    height: 50
+                    color: "#ffffff"
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                    Label {
+                        id: tchrtext1
+                        y: -58
+                        color: "#111111"
+                        text: qsTr("Time:")
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        font.pointSize: 9
+                        anchors.leftMargin: 25
+                        font.family: "Segoe UI"
+                    }
+
+                    CustomDropdown {
+                        x: -186
+                        y: -68
+                        width: 200
+                        height: 40
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        bgRadius: 3
+                        anchors.rightMargin: 25
+                        unselectText: "ready"
+                    }
+                }
+
+                Rectangle {
+                    id: date
+                    width: 400
+                    height: 50
+                    color: "#ffffff"
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+
+                    Label {
+                        id: tchrtext2
+                        y: -58
+                        color: "#111111"
+                        text: qsTr("Date:")
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        font.pointSize: 9
+                        font.family: "Segoe UI"
+                        anchors.leftMargin: 25
+                    }
+
+
+                    CustomTextField{
+                        id: timeField
+                        width: 200
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        font.capitalization: Font.AllUppercase
+                        placeholderText: "MM/dd/YYYY"
+                        anchors.rightMargin: 25
+
+                        Popup{
+                            visible: timeField.focus ? true : false
+                            y: timeField.height - 1
+                            width: timeField.width
+                            height: contentItem.implicitHeight
+                            padding: 1
+
+                            contentItem: DatePicker{
+                                implicitHeight: 160
+                                Component.onCompleted: set(new Date())
+                                onClicked: timeField.text = Qt.formatDate(date, 'MM/dd/yyyy')
+                            }
+                        }
+                    }
+                }
+
+                GroupBox {
+                    id: groupBox
+                    width: 0.9 * teacher.width
+                    height: 0.4 * appoint.height
+                    font.family: "Segoe UI"
+                    padding: 0
+                    Layout.preferredHeight: height
+                    Layout.preferredWidth: width
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                    title: qsTr("Purpose")
+
+                    ScrollView{
+                        anchors.fill: parent
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                        clip: true
+
+                        TextArea {
+                            id: textBox
+                            wrapMode: Text.Wrap
+                            topPadding: 10
+                            Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                            font.pointSize: 10
+                            font.family: "Segoe UI"
+                            selectByMouse: true
+
+                            background: Rectangle{
+                                color: "#00000000"
+                                border.width: 0.5
+                                border.color: "#111111"
+                            }
+                        }
+                    }
+                }
+
+
+                CustomButton{
+                    id: filterBtn
+                    width: 200
+                    height: 40
+                    font.family: "Segoe UI"
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                    implicitWidth: 200
+                    implicitHeight: 40
+
+                }
             }
         }
 
 
-        Rectangle {
-            id: filters
-            width: bg.width / 3.14159265
-            color: "#ffffff"
-            anchors.left: parent.left
+        GroupBox {
+            id: tableGrpBx
+            x: 846
+            width: bg.width - appoint.width - 200
+            anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            anchors.topMargin: 150
+            font.italic: true
+            font.pointSize: 10
+            font.family: "Segoe UI"
             anchors.bottomMargin: 25
-            anchors.leftMargin: 100
+            anchors.topMargin: 25
+            anchors.rightMargin: 25
+            title: qsTr("History")
 
-            Rectangle {
-                id: teacher
-                x: 91
-                width: 400
-                height: 50
-                color: "#ffffff"
-                anchors.top: parent.top
-                anchors.topMargin: 25
-                anchors.horizontalCenterOffset: 0
-                anchors.horizontalCenter: parent.horizontalCenter
+            TableView{
+                id: table
+                anchors.fill: parent
+                boundsBehavior: Flickable.StopAtBounds
+                clip: true
+                ScrollIndicator.horizontal: ScrollIndicator{}
+                ScrollIndicator.vertical: ScrollIndicator{}
+                columnWidthProvider: function (column) { return 100; }
+                topMargin: columnHeader.implicitHeight
 
-                Label {
-                    id: tchrtext
-                    y: -58
-                    color: "#111111"
-                    text: qsTr("Teacher:")
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: 25
-                    font.pointSize: 9
-                    font.family: "Segoe UI"
+                model: TableModel {
+                        TableModelColumn { display: "name" }
+                        TableModelColumn { display: "color" }
+                        TableModelColumn { display: "name" }
+                        TableModelColumn { display: "color" }
+                        TableModelColumn { display: "name" }
+                        TableModelColumn { display: "color" }
+                        TableModelColumn { display: "name" }
+                        TableModelColumn { display: "color" }
+                        TableModelColumn { display: "name" }
+                        TableModelColumn { display: "color" }
+                        TableModelColumn { display: "name" }
+                        TableModelColumn { display: "color" }
+                        TableModelColumn { display: "name" }
+                        TableModelColumn { display: "color" }
+                        TableModelColumn { display: "name" }
+                        TableModelColumn { display: "color" }
+
+                        rows: [
+                            {
+                                "name": "cat",
+                                "color": "black"
+                            },
+                            {
+                                "name": "dog",
+                                "color": "brown"
+                            },
+                            {
+                                "name": "bird",
+                                "color": "white"
+                            },
+                            {
+                                "name": "bird",
+                                "color": "white"
+                            },
+                            {
+                                "name": "bird",
+                                "color": "white"
+                            },
+                            {
+                                "name": "bird",
+                                "color": "white"
+                            },
+                            {
+                                "name": "bird",
+                                "color": "white"
+                            },
+                            {
+                                "name": "bird",
+                                "color": "white"
+                            },
+                            {
+                                "name": "bird",
+                                "color": "white"
+                            },
+                            {
+                                "name": "bird",
+                                "color": "white"
+                            },
+                            {
+                                "name": "bird",
+                                "color": "white"
+                            },
+                            {
+                                "name": "bird",
+                                "color": "white"
+                            },
+                            {
+                                "name": "bird",
+                                "color": "white"
+                            },
+                            {
+                                "name": "bird",
+                                "color": "white"
+                            }
+                        ]
+                    }
+
+                delegate: Rectangle {
+                    implicitWidth: 100
+                    implicitHeight: 50
+                    border.width: 1
+
+                    Text {
+                        text: display
+                        anchors.centerIn: parent
+                    }
                 }
 
-                CustomDropdown{
-                    x: -186
-                    y: -68
-                    width: 200
-                    height: 40
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    iconColor: "#111111"
-                    delegateColorPressed: "#ededed"
-                    delegateColorMouseOver: "#e7e7e7"
-                    delegateColorDefault: "#f9f9f9"
-                    bgRadius: 3
-                    anchors.rightMargin: 25
-                    unselectText: "ready"
-                }
-            }
+                Row{
+                    id: columnHeader
+                    y: table.contentY
+                    z: 2
+                    Repeater{
+                        id: repeater
+                        model: table.columns > 0 ? table.columns : 1
+                        Rectangle{
+                            id: rectangle
+                            color: "#333333"
+                            width: table.columnWidthProvider(modelData)
+                            height: 35
 
-            Rectangle {
-                id: time
-                x: 91
-                width: 400
-                height: 50
-                color: "#ffffff"
-                anchors.top: teacher.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.horizontalCenterOffset: 0
-                Label {
-                    id: tchrtext1
-                    y: -58
-                    color: "#111111"
-                    text: qsTr("Time:")
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    font.pointSize: 9
-                    anchors.leftMargin: 25
-                    font.family: "Segoe UI"
-                }
+                            Text {
+                                color: "#ffffff"
+                                text: qsTr("Column Header")
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                                font.bold: true
+                                font.family: "Segoe UI"
+                                padding: 10
+                            }
 
-                CustomDropdown {
-                    x: -186
-                    y: -68
-                    width: 200
-                    height: 40
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    bgRadius: 3
-                    anchors.rightMargin: 25
-                    unselectText: "ready"
-                }
-                anchors.topMargin: 25
-            }
-
-            Rectangle {
-                id: date
-                x: 91
-                width: 400
-                height: 50
-                color: "#ffffff"
-                anchors.top: time.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.horizontalCenterOffset: 0
-
-                Label {
-                    id: tchrtext2
-                    y: -58
-                    color: "#111111"
-                    text: qsTr("Date:")
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    font.pointSize: 9
-                    font.family: "Segoe UI"
-                    anchors.leftMargin: 25
-                }
-
-                anchors.topMargin: 25
-
-                CustomTextField{
-                    id: timeField
-                    width: 200
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    font.capitalization: Font.AllUppercase
-                    placeholderText: "MM/dd/YYYY"
-                    anchors.rightMargin: 25
-
-                    Popup{
-                        visible: timeField.focus ? true : false
-                        y: timeField.height - 1
-                        width: timeField.width
-                        height: contentItem.implicitHeight
-                        padding: 1
-
-                        contentItem: DatePicker{
-                            implicitHeight: 160
-                            Component.onCompleted: set(new Date())
-                            onClicked: timeField.text = Qt.formatDate(date, 'MM/dd/yyyy')
                         }
                     }
                 }
@@ -182,6 +340,6 @@ Item {
 }
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}
+    D{i:0;autoSize:true;height:720;width:1280}D{i:17}D{i:4}D{i:21}
 }
 ##^##*/
