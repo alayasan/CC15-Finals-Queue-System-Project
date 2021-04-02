@@ -6,6 +6,7 @@ import QtQuick.Layouts 1.15
 import Qt.labs.qmlmodels 1.0
 
 Item {
+    id: item1
     Rectangle {
         id: bg
         color: "#ffffff"
@@ -197,7 +198,7 @@ Item {
         GroupBox {
             id: tableGrpBx
             x: 846
-            width: bg.width - appoint.width - 200
+            width: bg.width - appoint.width - (0.6 * appoint.width)
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
@@ -216,7 +217,7 @@ Item {
                 clip: true
                 ScrollIndicator.horizontal: ScrollIndicator{}
                 ScrollIndicator.vertical: ScrollIndicator{}
-                columnWidthProvider: function (column) { return 100; }
+                // columnWidthProvider: function (column) { return 100; }
                 topMargin: columnHeader.implicitHeight
 
                 model: TableModel {
@@ -299,7 +300,7 @@ Item {
 
                 delegate: Rectangle {
                     implicitWidth: 100
-                    implicitHeight: 50
+                    implicitHeight: 40
                     border.width: 1
 
                     Text {
@@ -311,21 +312,33 @@ Item {
                 Row{
                     id: columnHeader
                     y: table.contentY
+                    spacing: 1
                     z: 2
                     Repeater{
                         id: repeater
-                        model: table.columns > 0 ? table.columns : 1
+                        model: ListModel{
+                            id: list
+                            ListElement{ head: "Status"}
+                            ListElement{ head: "Reference #"}
+                            ListElement{ head: "Teacher"}
+                            ListElement{ head: "Date & Time"}
+                            ListElement{ head: "Purpose"}
+                        }
+
                         Rectangle{
-                            id: rectangle
+                            id: headerRect
                             color: "#333333"
-                            width: table.columnWidthProvider(modelData)
+                            width: table.width / list.count
                             height: 35
 
                             Text {
                                 color: "#ffffff"
-                                text: qsTr("Column Header")
+                                text: head
+                                elide: Text.ElideRight
+                                anchors.verticalCenter: parent.verticalCenter
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
                                 font.bold: true
                                 font.family: "Segoe UI"
                                 padding: 10
@@ -340,6 +353,6 @@ Item {
 }
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:720;width:1280}D{i:17}D{i:4}D{i:21}
+    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}
 }
 ##^##*/
