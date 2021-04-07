@@ -84,6 +84,7 @@ ComboBox{
             source: ddIcon
         }
     }
+
     popup: Popup {
         id: comboPopup
         y: dropdown.height - 1

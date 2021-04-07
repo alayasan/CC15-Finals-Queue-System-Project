@@ -12,6 +12,28 @@ Item {
         anchors.fill: parent
 
         Rectangle {
+            id: contents
+            color: "#00000000"
+            anchors.left: leftMenu.right
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 25
+
+            Rectangle {
+                id: pageContainer
+                color: "#00000000"
+                anchors.fill: parent
+
+                StackView {
+                    id: stackView
+                    anchors.fill: parent
+                    initialItem: Qt.resolvedUrl("RegistrationPage.qml")
+                }
+            }
+        }
+
+        Rectangle {
             id: leftMenu
             width: 70
             color: "#f9f9f9"
@@ -167,6 +189,7 @@ Item {
 
         }
 
+
         Rectangle {
             id: bottomBar
             y: 478
@@ -196,27 +219,6 @@ Item {
             }
         }
 
-        Rectangle {
-            id: contents
-            color: "#00000000"
-            anchors.left: leftMenu.right
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 25
-
-            Rectangle {
-                id: pageContainer
-                color: "#00000000"
-                anchors.fill: parent
-
-                StackView {
-                    id: stackView
-                    anchors.fill: parent
-                    initialItem: Qt.resolvedUrl("AppointmentPage.qml")
-                }
-            }
-        }
     }
 
     Connections{

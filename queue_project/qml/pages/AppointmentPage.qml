@@ -129,6 +129,7 @@ Item {
                         font.capitalization: Font.AllUppercase
                         placeholderText: "MM/dd/YYYY"
                         anchors.rightMargin: 25
+                        readOnly: true
 
                         Popup{
                             visible: timeField.focus ? true : false
@@ -185,7 +186,6 @@ Item {
                     id: filterBtn
                     width: 200
                     height: 40
-                    font.family: "Segoe UI"
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     implicitWidth: 200
                     implicitHeight: 40
@@ -353,6 +353,6 @@ Item {
 }
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}
+    D{i:0;autoSize:true;height:720;width:1280}
 }
 ##^##*/
