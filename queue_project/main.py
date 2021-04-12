@@ -23,19 +23,24 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 
-def checkUser(user, password):  # checks for duplicate usernames
+def checkUser(user):  # checks for duplicate usernames
     query = "SELECT EXISTS (SELECT * FROM userlist WHERE username = '{}');".format(user)
     mycursor.execute(query)
     result = mycursor.fetchone()[0]
 
-    if result == 1:
+    if result != 1:
         return True
     else:
         return False
 
 
-def addAccount(user, password):
-    pass
+def addAccount(user, password, name, course, year):
+    query = "INSERT INTO userlist (username, password, name, course, year) VALUES ('{}', '{}', '{}', '{}', '{}')".format(user, password, name, course, year)
+    mycursor.execute(query)
+
+    mydb.commit()
+
+    print(mycursor.lastrowid, "record inserted")
 
 
 class MainWindow(QObject):
@@ -47,21 +52,23 @@ class MainWindow(QObject):
 
     # signals
     printTime = Signal(str)
+    accountCreated = Signal(bool)
 
     def setTime(self):  # time function
         now = datetime.datetime.now()
-        formatDate = now.strftime("%H:%M:%S  |  %m/%d/%Y")
+        formatDate = now.strftime("%I:%M:%S %p |  %m/%d/%Y")
         self.printTime.emit(formatDate)
 
     # starts registration
-    @Slot(str, str)
-    def registerUser(self, getUser, getPass):
-        boolVal = checkUser(getUser, getPass)
+    @Slot(str, str, str, str, int)
+    def registerUser(self, getUser, getPass, getName, getCourse, getYear):
+        boolVal = checkUser(getUser)
         if boolVal:
-            addAccount(getUser, getPass)
+            addAccount(getUser, getPass, getName.title(), getCourse, getYear)
             print("successful")
+            self.accountCreated.emit(boolVal)
         else:
-            print("unsuccessful")
+            print("username already used!")
 
 
 if __name__ == "__main__":

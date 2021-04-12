@@ -62,8 +62,8 @@ ListView {
 
                         width: grid.cellWidth;  height: grid.cellHeight
                         border.width: 0.3 * radius
-                        border.color: new Date(year, month, date).toDateString() == selectedDate.toDateString()  &&  textdate.text  &&  day >= 0?
-                                      'black': 'transparent' // selected
+                        border.color: new Date(year, month, date).toDateString() == selectedDate.toDateString()  &&  textdate.text  &&  day >= 0 ?
+                                      'black' : 'transparent' // selected
                         radius: 0.02 * root.height
                         opacity: !mouseArea.pressed ? 1 : 0.3  //  pressed state
 

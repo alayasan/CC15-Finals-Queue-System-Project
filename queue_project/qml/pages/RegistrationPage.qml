@@ -4,6 +4,15 @@ import QtGraphicalEffects 1.15
 import "../components"
 
 Item {
+
+    function miClipper(str){
+        return str.substring(0, 1) + "."
+    }
+
+    //properties
+    property var course: ""
+    property var year: ""
+
     Rectangle {
         id: bg
         color: "#ffffff"
@@ -19,7 +28,7 @@ Item {
             y: 235
             width: 500
             height: 500
-            color: "#b9b0b0"
+            color: "#3a53a4"
             radius: 20
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
@@ -40,12 +49,26 @@ Item {
                 x: 35
                 y: 100
                 anchors.bottom: coursefield.top
+                font.capitalization: Font.Capitalize
                 anchors.bottomMargin: 15
                 placeholderText: "NAME"
                 anchors.horizontalCenter: parent.horizontalCenter
                 readOnly: true
+                text: {
+                    if(lnfield.text !== "" && fnfield.text !== "" && mifield.text !== ""){
+                        lnfield.text + ", " + fnfield.text + " " + miClip
+                    } else if(lnfield.text !== "" && fnfield.text !== ""){
+                        lnfield.text + ", " + fnfield.text + " "
+                    } else {
+                        ""
+                    }
+                }
+
+                // properties
+                property var miClip: miClipper(mifield.text)
 
                 Popup{
+                    id: namepop
                     visible: parent.focus ? true : false
                     padding: 1
                     width: parent.width
@@ -73,9 +96,11 @@ Item {
                             }
 
                             CustomTextField{
+                                id: lnfield
                                 anchors.left: parent.left
                                 anchors.right: parent.right
                                 anchors.top: lntxt.bottom
+                                font.capitalization: Font.Capitalize
                                 anchors.rightMargin: 2
                                 anchors.topMargin: 3
                                 anchors.leftMargin: 2
@@ -100,9 +125,11 @@ Item {
                             }
 
                             CustomTextField{
+                                id: fnfield
                                 anchors.left: parent.left
                                 anchors.right: parent.right
                                 anchors.top: fntxt.bottom
+                                font.capitalization: Font.Capitalize
                                 anchors.rightMargin: 2
                                 anchors.topMargin: 3
                                 anchors.leftMargin: 2
@@ -127,12 +154,15 @@ Item {
                             }
 
                             CustomTextField{
+                                id: mifield
                                 anchors.left: parent.left
                                 anchors.right: parent.right
                                 anchors.top: mitxt.bottom
+                                font.capitalization: Font.Capitalize
                                 anchors.rightMargin: 2
                                 anchors.topMargin: 3
                                 anchors.leftMargin: 2
+                                
                             }
                         }
                     }
@@ -147,11 +177,90 @@ Item {
                 placeholderText: "COURSE & YEAR"
                 anchors.horizontalCenter: parent.horizontalCenter
                 readOnly: true
+                text: {
+                    if(year == ""){
+                        course
+                    } else if(course !== "" && year !== ""){
+                        course + " - " + year
+                    }
+                }
+                
+                Popup{
+                    id: yearpop
+                    width: 75
+                    height: contentItem.implicitHeight
+                    y: 1 - parent.height
+                    x: coursepop.width + parent.width + 1
+                    padding: 1
+
+                    contentItem: ListView{
+                        clip: true
+                        boundsBehavior: Flickable.StopAtBounds
+                        implicitHeight: 120
+                        ScrollIndicator.vertical: ScrollIndicator { }
+
+                        model: [ qsTr("1"), qsTr("2"), qsTr("3"), qsTr("4") ]
+
+                        delegate: RadioDelegate{
+                            id: control
+                            height: 40
+                            text: modelData
+                            hoverEnabled: true
+                            font.family: "Segoe UI"
+                            checked: index == 0
+
+                            contentItem: Text{
+                                id: radtxt
+                                leftPadding: control.indicator.width * 0.7
+                                text: control.text
+                                elide: Text.ElideRight
+                                anchors.left: rectangle2.left
+                                anchors.leftMargin: 15
+                                verticalAlignment: Text.AlignVCenter
+                                opacity: enabled ? 1 : 0.3
+                                color: control.down ? "#607D8B" : "#212121"
+                            }
+
+                            indicator: Rectangle{
+                                id: rectangle2
+                                implicitHeight: 16
+                                implicitWidth: 16
+                                color: "#00000000"
+                                radius: 9
+                                border.color: control.down ? "#3D5AFE" : "#64B5F6"
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: control.left
+                                anchors.leftMargin: 10
+
+                                Rectangle{
+                                    width: 8
+                                    height: 8
+                                    radius: 5
+                                    anchors.verticalCenter: rectangle2.verticalCenter
+                                    anchors.horizontalCenter: rectangle2.horizontalCenter
+                                    visible: control.checked
+                                    color: control.down ? "#3D5AFE" : "#64B5F6"
+                                }
+                            }
+
+                            background: Rectangle {
+                                implicitWidth: 100
+                                implicitHeight: 40
+                                visible: control.down || control.highlighted || control.hovered
+                                color: control.down || control.hovered ? "#bdbebf" : "#eeeeee"
+                            }
+
+                            onClicked:{
+                                year = radtxt.text
+                            }
+                        }
+                    }
+                }
 
                 Popup{
                     id: coursepop
                     visible: parent.focus ? true : false
-                    width: parent.width / 2
+                    width: parent.width * 0.65
                     height: contentItem.implicitHeight
                     y: 1 - parent.height
                     x: parent.width + 5
@@ -185,9 +294,12 @@ Item {
                             }
 
                             MouseArea{
+                                id: mouseArea
                                 anchors.fill: parent
+                                hoverEnabled: true
                                 onClicked: {
-                                    coursefield.text = dlgtText.text
+                                    course = dlgtText.text
+                                    yearpop.visible = true
                                 }
                             }
                         }
@@ -224,24 +336,36 @@ Item {
                 height: passfield.height
                 text: "REGISTER"
                 anchors.top: confirmpassfield.bottom
+                font.family: "Segoe UI"
+                font.bold: true
+                colorDefault: "#98a6ff"
                 anchors.topMargin: 15
                 anchors.horizontalCenter: parent.horizontalCenter
+
                 onClicked: {
-                    backend.registerUser(userfield.text, passfield.text)
+                    if(passfield.text == confirmpassfield.text){
+                        backend.registerUser(userfield.text, passfield.text, namefield.text,
+                                             course, parseInt(year))
+                    } else{
+                        userfield.text = "unsuccessful"
+                    }
                 }
             }
         }
-    }
 
-    Connections{
-        target: backend
+        Connections{
+            target: backend
 
-
+            function onAccountCreated(boolVal){
+                
+            }
+        }
     }
 }
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:2;height:720;width:1280}
+    D{i:0;autoSize:true;formeditorZoom:0.9;height:720;width:1280}
 }
 ##^##*/
+

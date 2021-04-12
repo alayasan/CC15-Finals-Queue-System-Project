@@ -9,6 +9,7 @@ TextField {
     property color colorDefault: "#ededed"
     property color colorOnFocus: "#f9f9f9"
     property color colorMouseOver: "#e7e7e7"
+    property color borderColor: "#333333"
 
     QtObject{
         id: internal
@@ -19,6 +20,10 @@ TextField {
                                    }
     }
 
+    function errorfield(){
+
+    }
+
     implicitWidth: 300
     implicitHeight: 40
     placeholderText: qsTr("Type something")
@@ -26,15 +31,13 @@ TextField {
     font.letterSpacing: 0.7
     font.bold: true
     font.family: "Segoe UI"
+
     background: Rectangle {
+        id: bg
         color: internal.dynamicColor
         radius: 3
-        border.width: if(textField.focus){
-                            textField.focus ? 2 : 0
-                      } else{
-                            0
-                      }
-        border.color: "#333333"
+        border.width: textField.focus ? 2 : 0
+        border.color: borderColor
     }
 
     selectByMouse: true

@@ -337,7 +337,7 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:0.66;height:720;width:1280}D{i:19;invisible:true}D{i:21;invisible:true}
+    D{i:0;formeditorZoom:0.75;height:720;width:1280}D{i:19;invisible:true}D{i:21;invisible:true}
 D{i:23;invisible:true}D{i:25;invisible:true}D{i:27;invisible:true}
 }
 ##^##*/

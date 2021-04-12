@@ -9,6 +9,9 @@ Item {
         color: "#ffffff"
         anchors.fill: parent
 
+        TapHandler{
+            onTapped: forceActiveFocus()
+        }
 
         Image {
             id: image
@@ -52,30 +55,23 @@ Item {
                 Row {
                     id: rowLogo
                     anchors.fill: parent
+                    leftPadding: 15
+                    rightPadding: 15
+                    spacing: 15
 
                     Image {
                         id: xuLogo
                         width: xuLogo.height
-                        anchors.left: parent.left
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
+                        height: logoBar.height
                         source: "../images/logos/xu logo.png"
-                        anchors.leftMargin: 15
-                        anchors.bottomMargin: 0
-                        anchors.topMargin: 0
                         fillMode: Image.PreserveAspectFit
                     }
 
                     Image {
                         id: ccsLogo
                         width: ccsLogo.height
-                        anchors.right: parent.right
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
+                        height: logoBar.height
                         source: "../images/logos/CCS logo.png"
-                        anchors.bottomMargin: 0
-                        anchors.topMargin: 0
-                        anchors.rightMargin: 15
                         fillMode: Image.PreserveAspectFit
                     }
                 }
@@ -274,6 +270,6 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}D{i:3}D{i:2}
+    D{i:0;autoSize:true;formeditorZoom:1.5;height:720;width:1280}
 }
 ##^##*/

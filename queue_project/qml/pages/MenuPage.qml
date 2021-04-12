@@ -28,7 +28,7 @@ Item {
                 StackView {
                     id: stackView
                     anchors.fill: parent
-                    initialItem: Qt.resolvedUrl("RegistrationPage.qml")
+                    initialItem: Qt.resolvedUrl("LoginPage.qml")
                 }
             }
         }
