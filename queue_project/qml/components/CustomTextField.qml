@@ -10,6 +10,7 @@ TextField {
     property color colorOnFocus: "#f9f9f9"
     property color colorMouseOver: "#e7e7e7"
     property color borderColor: "#333333"
+    property var borderWidth: textField.focus ? 2 : 0
 
     QtObject{
         id: internal
@@ -36,7 +37,7 @@ TextField {
         id: bg
         color: internal.dynamicColor
         radius: 3
-        border.width: textField.focus ? 2 : 0
+        border.width: borderWidth
         border.color: borderColor
     }
 

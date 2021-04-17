@@ -183,16 +183,18 @@ Item {
                 property: "width"
                 to: if(leftMenu.width == 70) return 200; else return 70
                 duration: 700
-                easing.type: Easing.InOutQuint
+                easing.type: Easing.InOutSine
+
+
             }
 
 
         }
 
-
         Rectangle {
             id: bottomBar
-            y: 478
+            x: 70
+            y: 695
             height: 25
             color: "#e7e7e7"
             anchors.left: leftMenu.right
@@ -218,7 +220,6 @@ Item {
                 font.pointSize: 9
             }
         }
-
     }
 
     Connections{
@@ -228,10 +229,10 @@ Item {
             labelDate.text = time
         }
     }
-}
 
-/*##^##
+    /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:1.1;height:720;width:1280}
+    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}D{i:5}
 }
 ##^##*/
+}

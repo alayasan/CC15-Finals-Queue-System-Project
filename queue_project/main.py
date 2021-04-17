@@ -10,14 +10,13 @@ from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtCore import QObject, Slot, Signal, QTimer
 
 currentUser = ""
-userPass = ""
 
 # connecting to the database
 mydb = mysql.connector.connect(
-    host=db_config.DB_Host,
-    user=db_config.DB_Username,
-    password=db_config.DB_Password,
-    database=db_config.DB
+    host = db_config.DB_Host,
+    user = db_config.DB_Username,
+    password = db_config.DB_Password,
+    database = db_config.DB
 )
 
 mycursor = mydb.cursor()
@@ -34,13 +33,35 @@ def checkUser(user):  # checks for duplicate usernames
         return False
 
 
-def addAccount(user, password, name, course, year):
-    query = "INSERT INTO userlist (username, password, name, course, year) VALUES ('{}', '{}', '{}', '{}', '{}')".format(user, password, name, course, year)
+def addUser(user, password):
+    query = "INSERT INTO userlist (username, password) VALUES ('{}', '{}')".format(user, password)
     mycursor.execute(query)
 
     mydb.commit()
 
     print(mycursor.lastrowid, "record inserted")
+
+
+def addUserDetails(user, firstName, lastName, course, year):
+    query = "INSERT INTO userdetails (username, firstname, lastname, course, year) VALUES ('{}', '{}', '{}', '{}', '{}')".format(user, firstName, lastName, course, year)
+    mycursor.execute(query)
+
+    mydb.commit()
+
+    print(mycursor.lastrowid, "record inserted")
+
+
+def checkLogin(user, password):
+    query = "SELECT EXISTS (SELECT * FROM userlist WHERE username = '{}' AND password = '{}');".format(user, password)
+    mycursor.execute(query)
+    result = mycursor.fetchone()[0]
+
+    print(user, password, result)
+
+    if result == 1:
+        return True
+    else:
+        return False
 
 
 class MainWindow(QObject):
@@ -53,6 +74,7 @@ class MainWindow(QObject):
     # signals
     printTime = Signal(str)
     accountCreated = Signal(bool)
+    loggedIn = Signal(bool)
 
     def setTime(self):  # time function
         now = datetime.datetime.now()
@@ -60,15 +82,26 @@ class MainWindow(QObject):
         self.printTime.emit(formatDate)
 
     # starts registration
-    @Slot(str, str, str, str, int)
-    def registerUser(self, getUser, getPass, getName, getCourse, getYear):
+    @Slot(str, str, str, str, str, int)
+    def registerUser(self, getUser, getPass, getFirstName, getLastName, getCourse, getYear):
         boolVal = checkUser(getUser)
         if boolVal:
-            addAccount(getUser, getPass, getName.title(), getCourse, getYear)
+            addUser(getUser, getPass)
+            addUserDetails(getUser, getFirstName.title(), getLastName.title(), getCourse, getYear)
             print("successful")
             self.accountCreated.emit(boolVal)
         else:
             print("username already used!")
+
+    # login
+    @Slot(str, str)
+    def userLogin(self, getUser, getPass):
+        boolVal = checkLogin(getUser, getPass)
+        if boolVal:
+            self.loggedIn.emit(boolVal)
+        else:
+            self.loggedIn.emit(boolVal)
+            print("unsuccessful login")
 
 
 if __name__ == "__main__":

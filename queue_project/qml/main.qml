@@ -92,11 +92,25 @@ Window {
                     id: stackView
                     x: 1
                     y: 36
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-                    initialItem: Qt.resolvedUrl("pages/MenuPage.qml")
+                    anchors.fill: parent
+                    initialItem: Qt.resolvedUrl("pages/LoginPage.qml")
+
+                    pushEnter: Transition {
+                        PropertyAnimation {
+                            property: "opacity"
+                            from: 0
+                            to:1
+                            duration: 300
+                        }
+                    }
+                    pushExit: Transition {
+                        PropertyAnimation {
+                            property: "opacity"
+                            from: 1
+                            to:0
+                            duration: 300
+                        }
+                    }
                 }
             }
 
@@ -253,7 +267,6 @@ Window {
         }
     }
 
-
     MouseArea {
         id: resizeLeft
         width: 10
@@ -332,6 +345,16 @@ Window {
         samples: 16
         source: bg
         z : 0
+    }
+
+    Connections{
+        target: backend
+
+        function onLoggedIn(boolVal){
+            if(boolVal){
+                stackView.push(Qt.resolvedUrl("pages/MenuPage.qml"))
+            }
+        }
     }
 }
 
