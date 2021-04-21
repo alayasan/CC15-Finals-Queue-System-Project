@@ -12,7 +12,7 @@ ComboBox{
     property color colorPressed: "#e7e7e7"
     property color colorMouseOver: "#f9f9f9"
     property double bgRadius
-    property var unselectText
+    property var unselectText: "NO DISPLAY TEXT"
     property color delegateColorDefault: "#ededed"
     property color delegateColorPressed: "#e7e7e7"
     property color delegateColorMouseOver: "#f9f9f9"
@@ -31,8 +31,11 @@ ComboBox{
     displayText: if(currentIndex == -1){
                      qsTr(unselectText)
                  }
-    model: [ qsTr("Equipment1"), qsTr("Equipment2"), qsTr("Equipment3"), qsTr("Equipment4"), qsTr("Equipment5"), qsTr("Equipment6"), qsTr("Equipment2"), qsTr("Equipment3"), qsTr("Equipment4"), qsTr("Equipment2"), qsTr("Equipment3"), qsTr("Equipment4") ]
+
+    model: 1
     font.family: "Segoe UI"
+    width: 200
+    height: 40
 
     background: Rectangle{
         id: dropdownbg

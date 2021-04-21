@@ -9,7 +9,7 @@ from PySide2.QtGui import QGuiApplication
 from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtCore import QObject, Slot, Signal, QTimer
 
-currentUser = ""
+currentUser = "admin"
 
 # connecting to the database
 mydb = mysql.connector.connect(
@@ -21,14 +21,13 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
-
 def checkUser(user):  # checks for duplicate usernames
     query = "SELECT EXISTS (SELECT * FROM userlist WHERE username = '{}');".format(user)
     mycursor.execute(query)
     result = mycursor.fetchone()[0]
 
     if result != 1:
-        return True
+        return True  # if user does not exist, register
     else:
         return False
 
@@ -59,7 +58,7 @@ def checkLogin(user, password):
     print(user, password, result)
 
     if result == 1:
-        return True
+        return True  # if user exist, and password match, login
     else:
         return False
 
@@ -75,6 +74,8 @@ class MainWindow(QObject):
     printTime = Signal(str)
     accountCreated = Signal(bool)
     loggedIn = Signal(bool)
+    facultyRowCount = Signal(int)
+    facultyNameList = Signal(str)
 
     def setTime(self):  # time function
         now = datetime.datetime.now()
@@ -96,12 +97,46 @@ class MainWindow(QObject):
     # login
     @Slot(str, str)
     def userLogin(self, getUser, getPass):
+        global currentUser
         boolVal = checkLogin(getUser, getPass)
         if boolVal:
+            currentUser = getUser
             self.loggedIn.emit(boolVal)
         else:
             self.loggedIn.emit(boolVal)
             print("unsuccessful login")
+
+    # get faculty details (for the dropdown)
+    @Slot(int)
+    def fetchFacultyDetails(self, index):
+        query = "SELECT CONCAT(lastname, ', ', firstname) AS facultyname FROM facultydetails ORDER BY facultyname"
+        mycursor.execute(query)
+
+        result = mycursor.fetchall()
+        row = mycursor.rowcount
+
+        if row < 1:
+            self.facultyNameList.emit("EMPTY!")
+
+        if index < row:
+            facname = result[index]
+            self.facultyNameList.emit(facname[0])
+        
+        self.facultyRowCount.emit(row)
+
+    # push appointment details to db
+    @Slot(str, str, str, str)
+    def pushAppointmentDetails(self, getFacultyName, getTime, getDate, getReason):
+        global currentUser
+        print(getTime)
+        query = " ".join(("INSERT INTO appointmentHistory",
+                        "(appointmentFrom, appointmentWith, time, date, reason)",
+                        "VALUES ('{}', '{}', '{}', '{}', '{}');".format(currentUser, getFacultyName, getTime, getDate, getReason)
+                    ))
+        mycursor.execute(query)
+
+        mydb.commit()
+        print("Insert Successful!")
 
 
 if __name__ == "__main__":

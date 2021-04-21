@@ -22,15 +22,29 @@ Item {
             onTapped: forceActiveFocus()
         }
 
+        CustomTableView{
+            id: table
+            x: 555
+            width: 700
+            height: 484
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.rightMargin: 25
+            anchors.topMargin: 100
+        }
+
+        /*
         Rectangle {
             id: rectangle
             x: 446
             y: 235
-            width: 500
-            height: 500
+            width: 437
+            height: 352
             color: "#3a53a4"
             radius: 20
             anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: -86
+            anchors.horizontalCenterOffset: 414
             anchors.horizontalCenter: parent.horizontalCenter
 
             CustomTextField{
@@ -352,6 +366,7 @@ Item {
                 }
             }
         }
+        */
 
         Connections{
             target: backend
@@ -365,7 +380,7 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:0.9;height:720;width:1280}
+    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}D{i:3}
 }
 ##^##*/
 

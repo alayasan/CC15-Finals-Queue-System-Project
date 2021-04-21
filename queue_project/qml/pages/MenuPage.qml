@@ -28,7 +28,7 @@ Item {
                 StackView {
                     id: stackView
                     anchors.fill: parent
-                    initialItem: Qt.resolvedUrl("LoginPage.qml")
+                    initialItem: Qt.resolvedUrl("AppointmentPage.qml")
                 }
             }
         }
@@ -232,7 +232,7 @@ Item {
 
     /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}D{i:5}
+    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}
 }
 ##^##*/
 }

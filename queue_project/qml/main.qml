@@ -93,7 +93,7 @@ Window {
                     x: 1
                     y: 36
                     anchors.fill: parent
-                    initialItem: Qt.resolvedUrl("pages/LoginPage.qml")
+                    initialItem: Qt.resolvedUrl("pages/MenuPage.qml")
 
                     pushEnter: Transition {
                         PropertyAnimation {

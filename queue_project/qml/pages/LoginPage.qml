@@ -13,6 +13,10 @@ Item {
         id: bg
         color: "#ffffff"
         anchors.fill: parent
+        anchors.rightMargin: 0
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 0
+        anchors.topMargin: 0
 
         TapHandler{
             onTapped: forceActiveFocus()
@@ -96,6 +100,17 @@ Item {
                 font.family: "Segoe UI"
             }
 
+            Label {
+                id: loginNoticeText
+                y: 253
+                anchors.left: parent.left
+                anchors.bottom: usernameField.top
+                anchors.bottomMargin: 5
+                anchors.leftMargin: 50
+                font.pointSize: 10
+                font.family: "Segoe UI"
+            }
+
             CustomTextField{
                 id: usernameField
                 width: 300
@@ -105,8 +120,12 @@ Item {
                 anchors.topMargin: 25
                 anchors.horizontalCenterOffset: 0
                 anchors.horizontalCenter: parent.horizontalCenter
+                onFocusChanged: {
+                    if(focus){
+                        loginNoticeText.text = ""
+                    }
+                }
             }
-
 
             CustomTextField {
                 id: passwordField
@@ -165,6 +184,7 @@ Item {
                 onFocusChanged: {
                     if(passwordField.focus){
                         iconEye.visible = true
+                        loginNoticeText.text = ""
                     } else{
                         iconEye.visible = false
                         if(passwordField.text != ""){
@@ -173,6 +193,7 @@ Item {
                     }
                 }
             }
+
 
             Label {
                 id: cantSignIn
@@ -198,6 +219,7 @@ Item {
                     }
                 }
             }
+
 
             Label {
                 id: createAccnt
@@ -235,6 +257,7 @@ Item {
                 }
             }
 
+
             CustomButton{
                 id: loginButton
                 x: 143
@@ -271,6 +294,7 @@ Item {
 
                 onClicked: backend.userLogin(usernameField.text, passwordField.text)
             }
+
         }
 
         Rectangle {
@@ -751,10 +775,20 @@ Item {
             z: 0
         }
     }
+
+    Connections{
+        target: backend
+
+        function onLoggedIn(boolVal){
+            if(!boolVal){
+                loginNoticeText.text = qsTr("Wrong credentials!")
+            }
+        }
+    }
 }
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:1.75;height:720;width:1280}D{i:60}
+    D{i:0;autoSize:true;formeditorZoom:1.33;height:720;width:1280}D{i:11}D{i:61}
 }
 ##^##*/

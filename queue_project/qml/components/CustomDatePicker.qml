@@ -101,8 +101,6 @@ ListView {
         }
     }
 
-
-
      // Component.onCompleted: set(new Date()) // today (otherwise Jan 0000)
 }
 
