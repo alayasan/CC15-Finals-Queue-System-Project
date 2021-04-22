@@ -76,6 +76,8 @@ class MainWindow(QObject):
     loggedIn = Signal(bool)
     facultyRowCount = Signal(int)
     facultyNameList = Signal(str)
+    pullAppointmentDetails = Signal(str, str, str, str, str)
+    rowAppointmentDetails = Signal(int)
 
     def setTime(self):  # time function
         now = datetime.datetime.now()
@@ -137,6 +139,23 @@ class MainWindow(QObject):
 
         mydb.commit()
         print("Insert Successful!")
+
+    # populating the appointment history
+    @Slot(int)
+    def fetchAppointmentDetails(self, index):
+        query = " ".join(("SELECT * FROM appointmenthistory",
+                        "WHERE appointmentFrom = '{}'".format(currentUser),
+                        "ORDER BY referenceID;"
+                    ))
+        mycursor.execute(query)
+
+        result = mycursor.fetchall()
+        rowcount = mycursor.rowcount
+        self.rowAppointmentDetails.emit(rowcount)
+
+        if index < rowcount:
+            datetimestr = str(result[index][3]) + '\n' + result[index][4]
+            self.pullAppointmentDetails.emit(str(result[index][0]), result[index][2], datetimestr, result[index][5], result[index][6])
 
 
 if __name__ == "__main__":

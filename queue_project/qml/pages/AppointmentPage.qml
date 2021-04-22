@@ -19,7 +19,7 @@ Item {
 
         Rectangle{
             id: tablebg
-            width: 700
+            width: 650 + reflabel.width
             color: "#98a6ff"
             radius: 10
             anchors.right: parent.right
@@ -86,21 +86,34 @@ Item {
                             y: 65
                             width: tableList.width
                             height: reasontxt.height > 40 ? reasontxt.height : 40
-                            color: "#e95555"
+                            color: {
+                                if(statustxt.text == "PENDING"){
+                                    "yellow"
+                                } else if(statustxt.text == "FINISHED"){
+                                    "green"
+                                } else if(statustxt.text == "CANCELLED"){
+                                    "red"
+                                } else if(statustxt.text == "UPCOMING"){
+                                    "brown"
+                                }
+                            }
                             radius: 10
 
                             Rectangle {
                                 id: rowbg
-                                color: "#95a3fe"
-                                radius: 10
-                                anchors.fill: parent
-                                anchors.leftMargin: 3
+                                width: accentbg.width - 3
+                                color: "#ededed"
+                                radius: 7
+                                anchors.right: parent.right
+                                anchors.top: parent.top
+                                anchors.bottom: parent.bottom
+
                                 Label {
                                     id: reftxt
                                     y: 14
-                                    width: reflabel.implicitWidth
+                                    width: reflabel.width
                                     height: implicitHeight
-                                    text: qsTr("Label")
+                                    text: reference
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.left: parent.left
                                     verticalAlignment: Text.AlignVCenter
@@ -114,7 +127,7 @@ Item {
                                     y: 0
                                     width: teacherlabel.width
                                     height: implicitHeight
-                                    text: qsTr("Label")
+                                    text: teacher
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.left: reftxt.right
                                     verticalAlignment: Text.AlignVCenter
@@ -129,7 +142,7 @@ Item {
                                     y: 0
                                     width: datelabel.width
                                     height: implicitHeight
-                                    text: qsTr("Label")
+                                    text: datetime
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.left: teachertxt.right
                                     verticalAlignment: Text.AlignVCenter
@@ -144,7 +157,7 @@ Item {
                                     y: 18
                                     width: reasonlabel.width
                                     height: implicitHeight > 40 ? implicitHeight : 40
-                                    text: qsTr("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet nec ullamcorper sit amet risus nullam eget felis eget.")
+                                    text: reason
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.left: datetxt.right
                                     font.letterSpacing: 0.3
@@ -161,7 +174,7 @@ Item {
                                     id: statustxt
                                     y: 0
                                     height: implicitHeight
-                                    text: qsTr("Label")
+                                    text: status
                                     anchors.verticalCenter: parent.verticalCenter
                                     anchors.left: reasontxt.right
                                     anchors.right: parent.right
@@ -189,7 +202,28 @@ Item {
                         ScrollBar.vertical: ScrollBar{ }
                         spacing: 5
 
-                        model: 10
+                        // properties
+                        property int index: 0
+                        property int rowCount: 1
+
+                        Timer{
+                            id: appointmentHistoryTimer
+                            interval: 100
+                            repeat: true
+                            running: true
+                            onTriggered: {
+                                if(tableList.index < tableList.rowCount){
+                                    backend.fetchAppointmentDetails(tableList.index)
+                                    tableList.index = tableList.index + 1
+                                }
+                            }
+                        }
+
+                        ListModel{
+                            id: tableListModel
+                        }
+
+                        model: tableListModel
                         delegate: listdelegate
                     }
 
@@ -208,11 +242,11 @@ Item {
                         Label {
                             id: reflabel
                             y: 14
+                            width: implicitWidth * 1.5
                             color: "#ffffff"
                             text: qsTr("Reference")
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.left
-                            horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                             font.family: "Segoe UI"
                             anchors.leftMargin: 15
@@ -222,7 +256,7 @@ Item {
                         Label {
                             id: teacherlabel
                             y: 14
-                            width: parent.width * 0.25
+                            width: parent.width * 0.15
                             color: "#ffffff"
                             text: qsTr("Teacher")
                             anchors.verticalCenter: parent.verticalCenter
@@ -320,6 +354,7 @@ Item {
                     id: teacherdd
                     x: -186
                     y: -68
+                    width: bg.width < 1280 ? 150 : 200
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     iconColor: "#111111"
@@ -387,6 +422,7 @@ Item {
 
                 CustomDropdown{
                     id: timedd
+                    width: teacherdd.width
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: 25
@@ -445,7 +481,6 @@ Item {
 
                 CustomTextField{
                     id: datefield
-                    width: 200
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     font.capitalization: Font.AllUppercase
@@ -454,12 +489,13 @@ Item {
                     readOnly: true
 
                     // properties
-                    property var selDate  // to be used for the db
+                    property var selDate
+                    width: teacherdd.width  // to be used for the db
 
                     Popup{
                         visible: datefield.focus ? true : false
                         y: datefield.height - 1
-                        width: datefield.width
+                        width: datefield.width == 200 ? datefield.width : datefield.width * 1.5
                         height: contentItem.implicitHeight
                         padding: 1
 
@@ -532,10 +568,13 @@ Item {
                 implicitHeight: 40
 
                 onClicked: {
+                    backend.fetchAppointmentDetails()
+                    /*
                     if(teacherdd.text !== "" && teacherdd.text !== "Teacher" && timedd.text !== ""
                         && timedd !== "Time" && datefield.selDate !== "" && textBox.text !== ""){
                         backend.pushAppointmentDetails(teacherdd.textAt(teacherdd.currentIndex), timedd.textAt(timedd.currentIndex), datefield.selDate, textBox.text)
-                    } else { console.log("There are some missing information.") }
+                    } else { console.log("There are some missing information.") }*/
+                    
                 }
             }
         }
@@ -708,6 +747,19 @@ Item {
 
         function onFacultyNameList(name){
             teacherdd.facname = name
+        }
+
+        function onRowAppointmentDetails(rowcount){
+            tableList.rowCount = rowcount
+        }
+
+        function onPullAppointmentDetails(getRef, getTeacher, getDateTime, getReason, getStatus){
+            tableListModel.append({ reference : getRef,
+                                    teacher : getTeacher,
+                                    datetime : getDateTime,
+                                    reason : getReason,
+                                    status : getStatus
+                                  })
         }
     }
 }
