@@ -17,22 +17,47 @@ Item {
             onTapped: forceActiveFocus()
         }
 
+        Rectangle {
+            id: topbar
+            height: 75
+            color: "#00000000"
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.rightMargin: 0
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+
+            Text {
+                id: text1
+                text: qsTr("Appointments")
+                anchors.left: parent.left
+                anchors.top: parent.top
+                font.letterSpacing: 0.5
+                font.pixelSize: 18
+                anchors.leftMargin: 25
+                anchors.topMargin: 25
+                font.bold: true
+                font.family: "Segoe UI"
+            }
+        }
+
         Rectangle{
             id: tablebg
             width: 650 + reflabel.width
             color: "#98a6ff"
-            radius: 10
+            radius: 8
             anchors.right: parent.right
-            anchors.top: parent.top
+            anchors.top: topbar.bottom
             anchors.bottom: parent.bottom
-            anchors.topMargin: 75
+            anchors.topMargin: 25
             anchors.rightMargin: 50
             anchors.bottomMargin: 25
 
             Rectangle {
                 id: contents
                 color: "#ededed"
-                radius: 10
+                radius: 8
                 anchors.fill: parent
                 anchors.rightMargin: 0
                 anchors.bottomMargin: 0
@@ -70,7 +95,9 @@ Item {
                 Rectangle {
                     id: tablearea
                     height: contents.height - topBar.height - 70
-                    radius: 10
+                    color: "#f9f9f9"
+                    radius: 8
+                    border.color: "#e7e7e7"
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: topBar.bottom
@@ -231,7 +258,7 @@ Item {
                         id: tableheader
                         height: 40
                         color: "#e95555"
-                        radius: 10
+                        radius: 8
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.top: parent.top
@@ -314,15 +341,19 @@ Item {
             }
         }
 
+
         Rectangle {
             id: appoint
-            height: (teacherbox.height * 3) + purposefield.height + filterBtn.height + 50
+            height: (teacherbox.height * 3) + purposefield.height + filterBtn.height + 100
             color: "#ffffff"
+            radius: 8
+            border.color: "#ededed"
+            border.width: 3
             anchors.left: parent.left
             anchors.right: tablebg.left
-            anchors.top: parent.top
-            anchors.rightMargin: 73
-            anchors.topMargin: 75
+            anchors.top: topbar.bottom
+            anchors.rightMargin: 75
+            anchors.topMargin: 25
             anchors.leftMargin: 50
 
 
@@ -333,9 +364,9 @@ Item {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
-                anchors.topMargin: 0
-                anchors.leftMargin: 0
-                anchors.rightMargin: 0
+                anchors.topMargin: 25
+                anchors.leftMargin: 10
+                anchors.rightMargin: 10
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
 
                 Label {
@@ -354,7 +385,7 @@ Item {
                     id: teacherdd
                     x: -186
                     y: -68
-                    width: bg.width < 1280 ? 150 : 200
+                    width: bg.width < 1350 ? 150 : 250
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     iconColor: "#111111"
@@ -495,7 +526,7 @@ Item {
                     Popup{
                         visible: datefield.focus ? true : false
                         y: datefield.height - 1
-                        width: datefield.width == 200 ? datefield.width : datefield.width * 1.5
+                        width: datefield.width == 250 ? datefield.width : datefield.width * 1.5
                         height: contentItem.implicitHeight
                         padding: 1
 
@@ -578,6 +609,7 @@ Item {
                 }
             }
         }
+
 
         /*
         GroupBox {
@@ -755,10 +787,10 @@ Item {
 
         function onPullAppointmentDetails(getRef, getTeacher, getDateTime, getReason, getStatus){
             tableListModel.append({ reference : getRef,
-                                    teacher : getTeacher,
-                                    datetime : getDateTime,
-                                    reason : getReason,
-                                    status : getStatus
+                                      teacher : getTeacher,
+                                      datetime : getDateTime,
+                                      reason : getReason,
+                                      status : getStatus
                                   })
         }
     }
@@ -767,6 +799,6 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}
+    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}D{i:4}D{i:3}
 }
 ##^##*/

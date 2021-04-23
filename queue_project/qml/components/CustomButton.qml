@@ -12,6 +12,7 @@ Button {
     property int bgRadius: 5
     property int borderWidth
     property color borderColor
+    
     QtObject{
         id: internal
 
