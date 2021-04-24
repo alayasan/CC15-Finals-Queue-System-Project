@@ -69,7 +69,6 @@ def checkLogin(user, password):
     print(user, password, result)
 
     if result == 1:
-        mycursor.close()
         return True  # if user exist, and password match, login
     else:
         mycursor.close()
@@ -92,6 +91,7 @@ class MainWindow(QObject):
     pullAppointmentDetails = Signal(str, str, str, str, str)
     rowAppointmentDetails = Signal(int)
     profileButtonSize = Signal(int)
+    pullProfileName = Signal(str)
 
     def setTime(self):  # time function
         now = datetime.datetime.now()
@@ -115,8 +115,10 @@ class MainWindow(QObject):
     def userLogin(self, getUser, getPass):
         global currentUser
         boolVal = checkLogin(getUser, getPass)
+
         if boolVal:
             currentUser = getUser
+            print("current user:", currentUser)
             self.loggedIn.emit(boolVal)
         else:
             self.loggedIn.emit(boolVal)
@@ -182,6 +184,22 @@ class MainWindow(QObject):
     def profileButtonResizer(self, size):
         self.profileButtonSize.emit(size)
 
+    @Slot()
+    def fetchName(self):
+        mycursor = openCursor()
+        namequery = "SELECT CONCAT(firstname, ' ', lastname) AS name FROM userdetails WHERE username = '{}';".format(currentUser)
+        mycursor.execute(namequery)
+        nameresult = mycursor.fetchone()[0]
+
+        self.pullProfileName.emit(nameresult)
+        print(nameresult)
+        mycursor.close()
+
+    @Slot()
+    def userLogout(self):
+        global currentUser
+        currentUser = ''
+        self.loggedIn.emit(False)
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)

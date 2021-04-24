@@ -45,6 +45,6 @@ Button {
 }
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:40;width:300}
+    D{i:0;height:25;width:50}
 }
 ##^##*/

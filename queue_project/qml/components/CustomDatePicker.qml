@@ -46,8 +46,10 @@ ListView {
             Grid { // 1 month calender
                 id: grid
 
-                width: root.width;  height: 0.875 * root.height
-                property real cellWidth:  width  / columns;
+                width: root.width
+                height: 0.875 * root.height
+
+                property real cellWidth:  width  / columns
                 property real cellHeight: height / rows // width and height of each cell in the grid.
 
                 columns: 7 // days
@@ -60,10 +62,11 @@ ListView {
                         property int day:  index - 7 // 0 = top left below Sunday (-7 to 41)
                         property int date: day - firstDay + 1 // 1-31
 
-                        width: grid.cellWidth;  height: grid.cellHeight
+                        width: grid.cellWidth
+                        height: grid.cellHeight
                         border.width: 0.3 * radius
                         border.color: new Date(year, month, date).toDateString() == selectedDate.toDateString()  &&  textdate.text  &&  day >= 0 ?
-                                      'black' : 'transparent' // selected
+                                      '#111111' : 'transparent' // selected
                         radius: 0.02 * root.height
                         opacity: !mouseArea.pressed ? 1 : 0.3  //  pressed state
 
@@ -101,7 +104,7 @@ ListView {
         }
     }
 
-     // Component.onCompleted: set(new Date()) // today (otherwise Jan 0000)
+    Component.onCompleted: set(new Date()) // today (otherwise Jan 0000)
 }
 
 /*##^##

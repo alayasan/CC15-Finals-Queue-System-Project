@@ -43,26 +43,6 @@ Item {
                     asynchronous: true
                     visible: status == Loader.Ready
                 }
-
-                Text {
-                    id: text1
-                    visible: loader.status == Loader.Loading
-                    text: qsTr("Loading")
-                    anchors.verticalCenter: parent.verticalCenter
-                    font.pixelSize: 60
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-
-                Text {
-                    id: text2
-                    x: 573
-                    y: 284
-                    visible: loader.status == Loader.Error
-                    text: qsTr("Error")
-                    anchors.verticalCenter: parent.verticalCenter
-                    font.pixelSize: 60
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
             }
         }
 
@@ -99,7 +79,7 @@ Item {
                 width: {
                     if(profileName.implicitWidth < 140){
                         profileName.implicitWidth + 83
-                    } else { 175 }
+                    } else { 200 }
                 }
                 color: "#00000000"
                 anchors.left: parent.left
@@ -108,6 +88,16 @@ Item {
                 anchors.leftMargin: 10
                 anchors.topMargin: 0
                 anchors.bottomMargin: 0
+
+                Timer{
+                    id: profileTimer
+                    running: true
+                    interval: 100
+                    onTriggered: {
+                        backend.fetchName()
+                        dashboard.dashSelected()
+                    }
+                }
 
                 Button {
                     id: profileButton
@@ -125,6 +115,8 @@ Item {
                                    profileButton.hovered ? "#e7e7e7" : "#ededed"
                                }
                         radius: 18
+                        border.color: "#ededed"
+                        border.width: profileButton.down ? 1 : 0
                     }
 
                     onClicked: {
@@ -156,7 +148,7 @@ Item {
                         id: profileName
                         height: 20
                         color: "#111111"
-                        text: "albert layasan albert"
+                        text: "albert layasan"
                         elide: Text.ElideRight
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
@@ -253,7 +245,6 @@ Item {
 
                     onHoveredChanged: dashAnimation.running = true
                     onClicked: dashSelected()
-                    onPressAndHold: dashBG.color = "#ededed"
 
                     Text{
                         id: dashText
@@ -538,166 +529,6 @@ Item {
             }
         }
 
-        /*
-        Rectangle {
-            id: leftMenu
-            width: 70
-            color: "#f9f9f9"
-            anchors.left: parent.left
-            anchors.top: navBar.bottom
-            anchors.bottom: parent.bottom
-            clip: true
-            anchors.bottomMargin: 0
-            anchors.topMargin: 0
-            anchors.leftMargin: 0
-
-
-            MenuButton{
-                id: menuButton
-                width: leftMenu.width
-                anchors.top: parent.top
-                anchors.topMargin: 0
-                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                font.weight: Font.Medium
-                font.family: "Segoe UI"
-                textColor: "#111111"
-                btnColorClicked: "#f9f9f9"
-                btnColorMouseOver: "#e7e7e7"
-                overlayColor: "#111111"
-                btnColorDefault: "#ededed"
-                btnIconSource: "../images/svg-images/menu_icon.svg"
-                onClicked: {
-                    menuAnimation.running = true
-                }
-            }
-
-
-            LeftMenuButton{
-                id: dashboardButton
-                x: 0
-                width: leftMenu.width
-                text: "Dashboard"
-                anchors.top: menuButton.bottom
-                anchors.topMargin: 1
-                font.family: "Segoe UI"
-                textColor: "#111111"
-                btnColorClicked: "#f9f9f9"
-                btnColorMouseOver: "#e7e7e7"
-                btnIconSource: "../images/svg-images/home_icon.svg"
-                overlayColor: "#111111"
-                btnColorDefault: "#ededed"
-            }
-
-
-            LeftMenuButton {
-                id: appointmentButton
-                x: 0
-                width: leftMenu.width
-                text: "Appointment"
-                anchors.top: dashboardButton.bottom
-                anchors.topMargin: 1
-                btnIconSource: "../images/svg-images/appointment-icon.svg"
-                textColor: "#111111"
-                overlayColor: "#111111"
-                btnColorDefault: "#ededed"
-                btnColorMouseOver: "#e7e7e7"
-                btnColorClicked: "#f9f9f9"
-                font.family: "Segoe UI"
-            }
-
-
-            LeftMenuButton {
-                id: reservationButton
-                x: 0
-                width: leftMenu.width
-                text: "Room Reservation"
-                anchors.top: appointmentButton.bottom
-                anchors.topMargin: 1
-                btnIconSource: "../images/svg-images/key-outline-icon.svg"
-                textColor: "#111111"
-                overlayColor: "#111111"
-                btnColorDefault: "#ededed"
-                btnColorMouseOver: "#e7e7e7"
-                btnColorClicked: "#f9f9f9"
-                font.family: "Segoe UI"
-            }
-
-
-            LeftMenuButton {
-                id: taskButton
-                x: 0
-                width: leftMenu.width
-                text: "Tasks"
-                anchors.top: reservationButton.bottom
-                anchors.topMargin: 1
-                btnIconSource: "../images/svg-images/clipboard-icon.svg"
-                textColor: "#111111"
-                overlayColor: "#111111"
-                btnColorDefault: "#ededed"
-                btnColorMouseOver: "#e7e7e7"
-                btnColorClicked: "#f9f9f9"
-                font.family: "Segoe UI"
-            }
-
-
-            LeftMenuButton {
-                id: settingsButton
-                x: 0
-                width: leftMenu.width
-                text: "Settings"
-                anchors.bottom: logoutButton.top
-                anchors.bottomMargin: 1
-                btnIconSource: "../images/svg-images/settings_icon.svg"
-                textColor: "#111111"
-                overlayColor: "#111111"
-                btnColorDefault: "#ededed"
-                btnColorMouseOver: "#e7e7e7"
-                btnColorClicked: "#f9f9f9"
-                font.family: "Segoe UI"
-            }
-
-            LeftMenuButton {
-                id: logoutButton
-                width: leftMenu.width
-                text: "Logout"
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 25
-                btnIconSource: "../images/svg-images/logout-icon.svg"
-                textColor: "#111111"
-                overlayColor: "#111111"
-                btnColorDefault: "#ededed"
-                btnColorMouseOver: "#e7e7e7"
-                btnColorClicked: "#f9f9f9"
-                font.family: "Segoe UI"
-            }
-
-            Rectangle {
-                id: rectangle
-                y: 415
-                width: leftMenu.width
-                height: 25
-                color: "#e7e7e7"
-                anchors.left: parent.left
-                anchors.bottom: parent.bottom
-                anchors.leftMargin: 0
-                anchors.bottomMargin: 0
-            }
-
-            PropertyAnimation {
-                id: menuAnimation
-                target: leftMenu
-                property: "width"
-                to: if(leftMenu.width == 70) return 200; else return 70
-                duration: 700
-                easing.type: Easing.InOutSine
-
-
-            }
-
-
-        }
-*/
-
         Rectangle {
             id: bottomBar
             y: 695
@@ -725,8 +556,125 @@ Item {
                 font.family: "Segoe UI"
                 font.pointSize: 9
             }
+
+            Label {
+                id: logout
+                color: logoutButton.hovered ? "red" : "#111111"
+                text: "Logout"
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.topMargin: 0
+                anchors.bottomMargin: 0
+                anchors.rightMargin: 50
+                font.family: "Segoe UI"
+                font.pointSize: 9
+
+                Button{
+                    id: logoutButton
+                    anchors.fill: parent
+                    background: Rectangle{
+                        color: "#00000000"
+                    }
+                    onClicked: {
+                        dimmer.visible = true
+                        logoutDialog.visible = true
+                    }
+                }
+            }
         }
 
+        Rectangle {
+            id: dimmer
+            opacity: 0.6
+            visible: false
+            color: "#000000"
+            anchors.fill: parent
+
+            TapHandler{
+                onTapped: forceActiveFocus()
+            }
+        }
+
+        Rectangle {
+            id: logoutDialog
+            x: 440
+            width: 175
+            height: 73
+            visible: false
+            color: "#ffffff"
+            radius: 8
+            anchors.top: parent.top
+            anchors.topMargin: 300
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            Label {
+                id: label
+                text: qsTr("Logout?")
+                anchors.left: parent.left
+                anchors.top: parent.top
+                verticalAlignment: Text.AlignVCenter
+                font.bold: true
+                font.family: "Segoe UI"
+                font.pointSize: 9
+                anchors.topMargin: 5
+                anchors.leftMargin: 10
+            }
+
+            CustomButton{
+                width: 50
+                height: 25
+                text: ""
+                anchors.left: parent.left
+                anchors.bottom: parent.bottom
+                borderColor: "#ededed"
+                borderWidth: down ? 1 : 0
+                colorMouseOver: "#e7e7e7"
+                colorPressed: "#f9f9f9"
+                colorDefault: "#ededed"
+                anchors.leftMargin: 25
+                anchors.bottomMargin: 15
+
+                contentItem: Text{
+                    color: "#111111"
+                    text: "Yes"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    font.family: "Segoe UI"
+                }
+
+                onClicked: backend.userLogout()
+            }
+
+            CustomButton {
+                width: 50
+                height: 25
+                text: ""
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.rightMargin: 25
+                anchors.bottomMargin: 15
+                contentItem: Text {
+                    color: "#111111"
+                    text: "No"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    font.family: "Segoe UI"
+                }
+                colorDefault: "#ededed"
+                colorMouseOver: "#e7e7e7"
+                borderColor: "#ededed"
+                colorPressed: "#f9f9f9"
+                borderWidth: down ? 1 : 0
+
+                onClicked: {
+                    dimmer.visible = false
+                    logoutDialog.visible = false
+                }
+            }
+        }
     }
 
     Connections{
@@ -739,12 +687,16 @@ Item {
         function onProfileButtonSize(size){
             profile.textWidth = size
         }
+
+        function onPullProfileName(name){
+            profileName.text = name
+        }
     }
 
     /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}D{i:9;invisible:true}
-D{i:44}
+    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}D{i:45}D{i:48;invisible:true}
+D{i:51}D{i:54}D{i:50;invisible:true}
 }
 ##^##*/
 }

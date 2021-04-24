@@ -100,15 +100,34 @@ Window {
                             property: "opacity"
                             from: 0
                             to:1
-                            duration: 300
+                            duration: 200
                         }
                     }
+
                     pushExit: Transition {
                         PropertyAnimation {
                             property: "opacity"
                             from: 1
                             to:0
-                            duration: 300
+                            duration: 200
+                        }
+                    }
+
+                    popEnter: Transition {
+                        PropertyAnimation {
+                            property: "opacity"
+                            from: 0
+                            to:1
+                            duration: 200
+                        }
+                    }
+                    
+                    popExit: Transition {
+                        PropertyAnimation {
+                            property: "opacity"
+                            from: 1
+                            to:0
+                            duration: 200
                         }
                     }
                 }
@@ -338,6 +357,7 @@ Window {
         }
     }
     DropShadow {
+        color: "#000000"
         anchors.fill: bg
         horizontalOffset: 0
         verticalOffset: 0
@@ -352,7 +372,11 @@ Window {
 
         function onLoggedIn(boolVal){
             if(boolVal){
+                stackView.pop()
                 stackView.push(Qt.resolvedUrl("pages/MenuPage.qml"))
+            } else { 
+                stackView.pop()
+                stackView.push(Qt.resolvedUrl("pages/LoginPage.qml"))
             }
         }
     }

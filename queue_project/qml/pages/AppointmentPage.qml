@@ -29,7 +29,7 @@ Item {
             anchors.topMargin: 0
 
             Text {
-                id: text1
+                id: title
                 text: qsTr("Appointments")
                 anchors.left: parent.left
                 anchors.top: parent.top
