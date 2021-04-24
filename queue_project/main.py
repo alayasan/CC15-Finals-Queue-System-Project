@@ -19,38 +19,49 @@ mydb = mysql.connector.connect(
     database = db_config.DB
 )
 
-mycursor = mydb.cursor()
+def openCursor():
+    cursor = mydb.cursor()
+    return cursor
+
 
 def checkUser(user):  # checks for duplicate usernames
+    mycursor = openCursor()
     query = "SELECT EXISTS (SELECT * FROM userlist WHERE username = '{}');".format(user)
     mycursor.execute(query)
     result = mycursor.fetchone()[0]
 
     if result != 1:
+        mycursor.close()
         return True  # if user does not exist, register
     else:
+        mycursor.close()
         return False
 
 
 def addUser(user, password):
+    mycursor = openCursor()
     query = "INSERT INTO userlist (username, password) VALUES ('{}', '{}')".format(user, password)
     mycursor.execute(query)
 
     mydb.commit()
 
     print(mycursor.lastrowid, "record inserted")
+    mycursor.close()
 
 
 def addUserDetails(user, firstName, lastName, course, year):
+    mycursor = openCursor()
     query = "INSERT INTO userdetails (username, firstname, lastname, course, year) VALUES ('{}', '{}', '{}', '{}', '{}')".format(user, firstName, lastName, course, year)
     mycursor.execute(query)
 
     mydb.commit()
 
     print(mycursor.lastrowid, "record inserted")
+    mycursor.close()
 
 
 def checkLogin(user, password):
+    mycursor = openCursor()
     query = "SELECT EXISTS (SELECT * FROM userlist WHERE username = '{}' AND password = '{}');".format(user, password)
     mycursor.execute(query)
     result = mycursor.fetchone()[0]
@@ -58,8 +69,10 @@ def checkLogin(user, password):
     print(user, password, result)
 
     if result == 1:
+        mycursor.close()
         return True  # if user exist, and password match, login
     else:
+        mycursor.close()
         return False
 
 
@@ -112,6 +125,7 @@ class MainWindow(QObject):
     # get faculty details (for the dropdown)
     @Slot(int)
     def fetchFacultyDetails(self, index):
+        mycursor = openCursor()
         query = "SELECT CONCAT(lastname, ', ', firstname) AS facultyname FROM facultydetails ORDER BY facultyname"
         mycursor.execute(query)
 
@@ -126,12 +140,13 @@ class MainWindow(QObject):
             self.facultyNameList.emit(facname[0])
         
         self.facultyRowCount.emit(row)
+        mycursor.close()
 
     # push appointment details to db
     @Slot(str, str, str, str)
     def pushAppointmentDetails(self, getFacultyName, getTime, getDate, getReason):
         global currentUser
-        print(getTime)
+        mycursor = openCursor()
         query = " ".join(("INSERT INTO appointmentHistory",
                         "(appointmentFrom, appointmentWith, time, date, reason)",
                         "VALUES ('{}', '{}', '{}', '{}', '{}');".format(currentUser, getFacultyName, getTime, getDate, getReason)
@@ -140,10 +155,12 @@ class MainWindow(QObject):
 
         mydb.commit()
         print("Insert Successful!")
+        mycursor.close()
 
     # populating the appointment history
     @Slot(int)
     def fetchAppointmentDetails(self, index):
+        mycursor = openCursor()
         query = " ".join(("SELECT * FROM appointmenthistory",
                         "WHERE appointmentFrom = '{}'".format(currentUser),
                         "ORDER BY referenceID;"
@@ -157,11 +174,14 @@ class MainWindow(QObject):
         if index < rowcount:
             datetimestr = str(result[index][3]) + '\n' + result[index][4]
             self.pullAppointmentDetails.emit(str(result[index][0]), result[index][2], datetimestr, result[index][5], result[index][6])
+        
+        mycursor.close()
 
     # bad structure but still wanna do it
     @Slot(int)
     def profileButtonResizer(self, size):
         self.profileButtonSize.emit(size)
+
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)

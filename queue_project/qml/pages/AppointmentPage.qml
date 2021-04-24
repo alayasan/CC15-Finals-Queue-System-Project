@@ -90,17 +90,61 @@ Item {
                         anchors.topMargin: 10
                         anchors.leftMargin: 10
                     }
+
+                    Button {
+                        id: refreshButton
+                        x: 702
+                        y: 42
+                        width: 20
+                        height: 20
+
+                        background: Rectangle{
+                            color: if(refreshButton.down){
+                                       refreshButton.down ? "#ededed" : "#f9f9f9"
+                                   }else{
+                                       refreshButton.hovered ? "#e7e7e7" : "#f9f9f9"
+                                   }
+                            radius: 11
+                            border.color: "#111111"
+                            border.width: refreshButton.down ? 1 : 0
+                        }
+
+                        Image {
+                            id: refreshIcon
+                            x: 7
+                            y: 7
+                            anchors.verticalCenter: parent.verticalCenter
+                            source: "../images/svg-images/refresh-icon.svg"
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            sourceSize.height: 10
+                            sourceSize.width: 10
+                            fillMode: Image.PreserveAspectFit
+
+                            ColorOverlay{
+                                anchors.fill: parent
+                                source: refreshIcon
+                                color: "#111111"
+                            }
+                        }
+
+                        onClicked: {
+                            tableListModel.clear()
+                            tableList.index = 0
+                            appointmentHistoryTimer.running = true
+                        }
+                    }
                 }
 
                 Rectangle {
                     id: tablearea
-                    height: contents.height - topBar.height - 70
                     color: "#f9f9f9"
                     radius: 8
                     border.color: "#e7e7e7"
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: topBar.bottom
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 10
                     anchors.topMargin: 0
                     anchors.rightMargin: 10
                     anchors.leftMargin: 10
@@ -112,7 +156,17 @@ Item {
                             id: accentbg
                             y: 65
                             width: tableList.width
-                            height: reasontxt.height > 40 ? reasontxt.height : 40
+                            height: {
+                                if(reasontxt.height > 40){
+                                    reasontxt.height > 40 ? reasontxt.height : 40
+                                } else if(teachertxt.height > 40 || datetxt.height > 40){
+                                    if(teachertxt.height > 40){
+                                        teachertxt.height
+                                    } else if(datetxt.height > 40){
+                                        datetxt.height
+                                    }
+                                } else { 40 }
+                            }
                             color: {
                                 if(statustxt.text == "PENDING"){
                                     "yellow"
@@ -159,6 +213,8 @@ Item {
                                     anchors.left: reftxt.right
                                     verticalAlignment: Text.AlignVCenter
                                     wrapMode: Text.WordWrap
+                                    bottomPadding: 5
+                                    topPadding: 5
                                     anchors.leftMargin: 10
                                     font.family: "Segoe UI"
                                     font.pointSize: 10
@@ -174,6 +230,8 @@ Item {
                                     anchors.left: teachertxt.right
                                     verticalAlignment: Text.AlignVCenter
                                     wrapMode: Text.WordWrap
+                                    bottomPadding: 5
+                                    topPadding: 5
                                     anchors.leftMargin: 10
                                     font.family: "Segoe UI"
                                     font.pointSize: 10
@@ -599,174 +657,16 @@ Item {
                 implicitHeight: 40
 
                 onClicked: {
-                    backend.fetchAppointmentDetails()
-                    /*
                     if(teacherdd.text !== "" && teacherdd.text !== "Teacher" && timedd.text !== ""
                         && timedd !== "Time" && datefield.selDate !== "" && textBox.text !== ""){
                         backend.pushAppointmentDetails(teacherdd.textAt(teacherdd.currentIndex), timedd.textAt(timedd.currentIndex), datefield.selDate, textBox.text)
-                    } else { console.log("There are some missing information.") }*/
-                    
+                        tableListModel.clear()
+                        tableList.index = 0
+                        appointmentHistoryTimer.running = true
+                    } else { console.log("There are some missing information.") }
                 }
             }
         }
-
-
-        /*
-        GroupBox {
-            id: tableGrpBx
-            x: 846
-            width: bg.width - appoint.width - (0.6 * appoint.width)
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            font.italic: true
-            font.pointSize: 10
-            font.family: "Segoe UI"
-            anchors.bottomMargin: 25
-            anchors.topMargin: 25
-            anchors.rightMargin: 25
-            title: qsTr("History")
-
-            TableView{
-                id: table
-                anchors.fill: parent
-                boundsBehavior: Flickable.StopAtBounds
-                clip: true
-                ScrollIndicator.horizontal: ScrollIndicator{}
-                ScrollIndicator.vertical: ScrollIndicator{}
-                // columnWidthProvider: function (column) { return 100; }
-                topMargin: columnHeader.implicitHeight
-
-                model: TableModel {
-                        TableModelColumn { display: "name" }
-                        TableModelColumn { display: "color" }
-                        TableModelColumn { display: "name" }
-                        TableModelColumn { display: "color" }
-                        TableModelColumn { display: "name" }
-                        TableModelColumn { display: "color" }
-                        TableModelColumn { display: "name" }
-                        TableModelColumn { display: "color" }
-                        TableModelColumn { display: "name" }
-                        TableModelColumn { display: "color" }
-                        TableModelColumn { display: "name" }
-                        TableModelColumn { display: "color" }
-                        TableModelColumn { display: "name" }
-                        TableModelColumn { display: "color" }
-                        TableModelColumn { display: "name" }
-                        TableModelColumn { display: "color" }
-
-                        rows: [
-                            {
-                                "name": "cat",
-                                "color": "black"
-                            },
-                            {
-                                "name": "dog",
-                                "color": "brown"
-                            },
-                            {
-                                "name": "bird",
-                                "color": "white"
-                            },
-                            {
-                                "name": "bird",
-                                "color": "white"
-                            },
-                            {
-                                "name": "bird",
-                                "color": "white"
-                            },
-                            {
-                                "name": "bird",
-                                "color": "white"
-                            },
-                            {
-                                "name": "bird",
-                                "color": "white"
-                            },
-                            {
-                                "name": "bird",
-                                "color": "white"
-                            },
-                            {
-                                "name": "bird",
-                                "color": "white"
-                            },
-                            {
-                                "name": "bird",
-                                "color": "white"
-                            },
-                            {
-                                "name": "bird",
-                                "color": "white"
-                            },
-                            {
-                                "name": "bird",
-                                "color": "white"
-                            },
-                            {
-                                "name": "bird",
-                                "color": "white"
-                            },
-                            {
-                                "name": "bird",
-                                "color": "white"
-                            }
-                        ]
-                    }
-
-                delegate: Rectangle {
-                    implicitWidth: 100
-                    implicitHeight: 40
-                    border.width: 1
-
-                    Text {
-                        text: display
-                        anchors.centerIn: parent
-                    }
-                }
-
-                Row{
-                    id: columnHeader
-                    y: table.contentY
-                    spacing: 1
-                    z: 2
-                    Repeater{
-                        id: repeater
-                        model: ListModel{
-                            id: list
-                            ListElement{ head: "Status"}
-                            ListElement{ head: "Reference #"}
-                            ListElement{ head: "Teacher"}
-                            ListElement{ head: "Date & Time"}
-                            ListElement{ head: "Purpose"}
-                        }
-
-                        Rectangle{
-                            id: headerRect
-                            color: "#333333"
-                            width: table.width / list.count
-                            height: 35
-
-                            Text {
-                                color: "#ffffff"
-                                text: head
-                                elide: Text.ElideRight
-                                anchors.verticalCenter: parent.verticalCenter
-                                horizontalAlignment: Text.AlignHCenter
-                                verticalAlignment: Text.AlignVCenter
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                font.bold: true
-                                font.family: "Segoe UI"
-                                padding: 10
-                            }
-
-                        }
-                    }
-                }
-            }
-        }
-        */
     }
 
     Connections{
@@ -799,6 +699,6 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}D{i:4}D{i:3}
+    D{i:0;autoSize:true;formeditorZoom:0.66;height:720;width:1280}
 }
 ##^##*/

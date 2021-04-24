@@ -18,6 +18,7 @@ Item {
             anchors.right: parent.right
             anchors.top: navBar.bottom
             anchors.bottom: parent.bottom
+            clip: true
             anchors.leftMargin: 0
             anchors.topMargin: 0
             anchors.bottomMargin: 25
@@ -27,10 +28,40 @@ Item {
                 color: "#00000000"
                 anchors.fill: parent
 
+                /*
                 StackView {
                     id: stackView
                     anchors.fill: parent
-                    initialItem: Qt.resolvedUrl("AppointmentPage.qml")
+                    initialItem: Qt.resolvedUrl("DashboardPage.qml")
+                }
+                */
+
+                Loader{
+                    id: loader
+                    anchors.fill: parent
+                    source: Qt.resolvedUrl("DashboardPage.qml")
+                    asynchronous: true
+                    visible: status == Loader.Ready
+                }
+
+                Text {
+                    id: text1
+                    visible: loader.status == Loader.Loading
+                    text: qsTr("Loading")
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 60
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                Text {
+                    id: text2
+                    x: 573
+                    y: 284
+                    visible: loader.status == Loader.Error
+                    text: qsTr("Error")
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 60
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
             }
         }
@@ -194,6 +225,7 @@ Item {
                     height: 56
 
                     background: Rectangle{
+                        id: dashBG
                         color: if(dashboard.down){
                                    dashboard.down ? "#ededed" : "#f9f9f9"
                                } else{
@@ -202,7 +234,26 @@ Item {
                         radius: 8
                     }
 
+                    function dashSelected(){
+                        dashBG.color = "#ededed"
+                        appBG.color = "#f9f9f9"
+                        resBG.color = "#f9f9f9"
+                        tasksBG.color = "#f9f9f9"
+                        dashanibarselected.width = dashboard.width
+                        dashanibar.width = 0
+                        appanibarselected.width = 0
+                        appanibar.width = 0
+                        resanibarselected.width = 0
+                        resanibar.width = 0
+                        tasksanibarselected.width = 0
+                        tasksanibar.width = 0
+                        loader.source = Qt.resolvedUrl("DashboardPage.qml")
+                        //stackView.push(Qt.resolvedUrl("DashboardPage.qml"))
+                    }
+
                     onHoveredChanged: dashAnimation.running = true
+                    onClicked: dashSelected()
+                    onPressAndHold: dashBG.color = "#ededed"
 
                     Text{
                         id: dashText
@@ -226,6 +277,19 @@ Item {
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 0
                         anchors.leftMargin: 0
+                        z: 0
+                    }
+
+                    Rectangle{
+                        id: dashanibarselected
+                        width: parent.width
+                        height: 3
+                        color: "#98a6ff"
+                        anchors.left: parent.left
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 0
+                        anchors.leftMargin: 0
+                        z: 1
                     }
 
                     PropertyAnimation{
@@ -243,6 +307,7 @@ Item {
                     width: 112
                     height: 56
                     background: Rectangle{
+                        id: appBG
                         color: if(appointments.down){
                                    appointments.down ? "#ededed" : "#f9f9f9"
                                } else{
@@ -251,7 +316,25 @@ Item {
                         radius: 8
                     }
 
+                    function appSelected(){
+                        dashBG.color = "#f9f9f9"
+                        appBG.color = "#ededed"
+                        resBG.color = "#f9f9f9"
+                        tasksBG.color = "#f9f9f9"
+                        dashanibarselected.width = 0
+                        dashanibar.width = 0
+                        appanibarselected.width = appointments.width
+                        appanibar.width = 0
+                        resanibarselected.width = 0
+                        resanibar.width = 0
+                        tasksanibarselected.width = 0
+                        tasksanibar.width = 0
+                        loader.source = Qt.resolvedUrl("AppointmentPage.qml")
+                        //stackView.push(Qt.resolvedUrl("AppointmentPage.qml"))
+                    }
+
                     onHoveredChanged: appntAnimation.running = true
+                    onClicked: appSelected()
 
                     Rectangle{
                         id: appanibar
@@ -261,11 +344,23 @@ Item {
                         anchors.bottom: parent.bottom
                         anchors.leftMargin: 0
                         anchors.bottomMargin: 0
+                        z: 0
+                    }
+
+                    Rectangle{
+                        id: appanibarselected
+                        height: 3
+                        color: "#98a6ff"
+                        anchors.left: parent.left
+                        anchors.bottom: parent.bottom
+                        anchors.leftMargin: 0
+                        anchors.bottomMargin: 0
+                        z: 1
                     }
 
                     Text {
                         id: homeText
-                        text: "home"
+                        text: "appointments"
                         anchors.verticalCenter: parent.verticalCenter
                         font.letterSpacing: 0.3
                         font.capitalization: Font.AllUppercase
@@ -290,6 +385,7 @@ Item {
                     width: 112
                     height: 56
                     background: Rectangle{
+                        id: resBG
                         color: if(reservations.down){
                                    reservations.down ? "#ededed" : "#f9f9f9"
                                } else{
@@ -298,7 +394,25 @@ Item {
                         radius: 8
                     }
 
+                    function resSelected(){
+                        dashBG.color = "#f9f9f9"
+                        appBG.color = "#f9f9f9"
+                        resBG.color = "#ededed"
+                        tasksBG.color = "#f9f9f9"
+                        dashanibarselected.width = 0
+                        dashanibar.width = 0
+                        appanibarselected.width = 0
+                        appanibar.width = 0
+                        resanibarselected.width = reservations.width
+                        resanibar.width = 0
+                        tasksanibarselected.width = 0
+                        tasksanibar.width = 0
+                        loader.source = Qt.resolvedUrl("ReservationPage.qml")
+                        //stackView.push(Qt.resolvedUrl("ReservationPage.qml"))
+                    }
+
                     onHoveredChanged: resAnimation.running = true
+                    onClicked: resSelected()
 
                     Rectangle{
                         id: resanibar
@@ -308,6 +422,18 @@ Item {
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 0
                         anchors.leftMargin: 0
+                        z: 0
+                    }
+
+                    Rectangle{
+                        id: resanibarselected
+                        height: 3
+                        color: "#98a6ff"
+                        anchors.left: parent.left
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 0
+                        anchors.leftMargin: 0
+                        z: 1
                     }
 
                     Text {
@@ -337,6 +463,7 @@ Item {
                     width: 112
                     height: 56
                     background: Rectangle{
+                        id: tasksBG
                         color: if(tasks.down){
                                    tasks.down ? "#ededed" : "#f9f9f9"
                                } else{
@@ -345,7 +472,25 @@ Item {
                         radius: 8
                     }
 
+                    function tasksSelected(){
+                        dashBG.color = "#f9f9f9"
+                        appBG.color = "#f9f9f9"
+                        resBG.color = "#f9f9f9"
+                        tasksBG.color = "#ededed"
+                        dashanibarselected.width = 0
+                        dashanibar.width = 0
+                        appanibarselected.width = 0
+                        appanibar.width = 0
+                        resanibarselected.width = 0
+                        resanibar.width = 0
+                        tasksanibarselected.width = tasks.width
+                        tasksanibar.width = 0
+                        loader.source = Qt.resolvedUrl("TaskPage.qml")
+                        //stackView.push(Qt.resolvedUrl("TaskPage.qml"))
+                    }
+
                     onHoveredChanged: tasksAnimation.running = true
+                    onClicked: tasksSelected()
 
                     Rectangle{
                         id: tasksanibar
@@ -355,6 +500,18 @@ Item {
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 0
                         anchors.leftMargin: 0
+                        z: 0
+                    }
+
+                    Rectangle{
+                        id: tasksanibarselected
+                        height: 3
+                        color: "#98a6ff"
+                        anchors.left: parent.left
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 0
+                        anchors.leftMargin: 0
+                        z: 1
                     }
 
                     Text {
@@ -543,11 +700,10 @@ Item {
 
         Rectangle {
             id: bottomBar
-            x: 70
             y: 695
             height: 25
             color: "#e7e7e7"
-            anchors.left: leftMenu.right
+            anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             anchors.leftMargin: 0
@@ -587,8 +743,8 @@ Item {
 
     /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}D{i:7;invisible:true}
-D{i:5}
+    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}D{i:9;invisible:true}
+D{i:44}
 }
 ##^##*/
 }
