@@ -92,6 +92,7 @@ class MainWindow(QObject):
     rowAppointmentDetails = Signal(int)
     profileButtonSize = Signal(int)
     pullProfileName = Signal(str)
+    pullUserDetails = Signal(str, str, str)
 
     def setTime(self):  # time function
         now = datetime.datetime.now()
@@ -185,14 +186,25 @@ class MainWindow(QObject):
         self.profileButtonSize.emit(size)
 
     @Slot()
-    def fetchName(self):
+    def fetchUserDetails(self):
         mycursor = openCursor()
-        namequery = "SELECT CONCAT(firstname, ' ', lastname) AS name FROM userdetails WHERE username = '{}';".format(currentUser)
+        namequery = "SELECT * FROM userdetails WHERE username = '{}';".format(currentUser)
         mycursor.execute(namequery)
-        nameresult = mycursor.fetchone()[0]
+        result = mycursor.fetchall()
+        firstname = result[0][1]
+        lastname = result[0][2]
+        middlename = result[0][3]
+        course = result[0][4]
+        year = result[0][5]
+        uid = result[0][6]
 
-        self.pullProfileName.emit(nameresult)
-        print(nameresult)
+        profilename = firstname + " " + lastname
+        fullname = lastname + ", " + firstname + " " + middlename
+        courseNyear = course + " - " + str(year)
+
+        self.pullProfileName.emit(profilename)
+        self.pullUserDetails.emit(fullname, courseNyear, uid)
+
         mycursor.close()
 
     @Slot()
