@@ -68,11 +68,12 @@ Item {
                 }
 
                 ListView {
-                    id: listView
+                    id: overviewList
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: text17.bottom
                     anchors.bottom: parent.bottom
+                    spacing: 20
                     clip: true
                     anchors.rightMargin: 15
                     anchors.leftMargin: 15
@@ -87,6 +88,75 @@ Item {
                             implicitHeight: 100
                             radius: width / 2
                             color: overviewScrollBar.pressed ? "#c9d5ff" : "#a5b1ff"
+                        }
+                    }
+
+                    delegate: overviewTableDelegate
+                    model: 15
+
+                    Component{
+                        id: overviewTableDelegate
+                        Rectangle {
+                            id: dlgtBG
+                            width: overviewList.width
+                            height: dlgtFaculty.height
+                            color: "#00000000"
+                            radius: 8
+
+                            Text {
+                                id: dlgtFaculty
+                                height: implicitHeight
+                                color: "#111111"
+                                text: qsTr("Jun Rangie Obispo")
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.left
+                                anchors.right: toolSeparator1.left
+                                font.pixelSize: 15
+                                horizontalAlignment: Text.AlignHCenter
+                                wrapMode: Text.Wrap
+                                anchors.leftMargin: 5
+                                anchors.rightMargin: 5
+                                font.family: "Segoe UI"
+                                font.capitalization: Font.Capitalize
+                            }
+
+                            ToolSeparator {
+                                id: toolSeparator1
+                                x: 171
+                                visible: false
+                                anchors.top: parent.top
+                                anchors.bottom: parent.bottom
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                anchors.bottomMargin: 0
+                                anchors.topMargin: 0
+                            }
+
+                            Text {
+                                id: dlgtFacultyStatus
+                                color: "#111111"
+                                text: qsTr("In")
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: toolSeparator1.right
+                                anchors.right: parent.right
+                                font.pixelSize: 15
+                                horizontalAlignment: Text.AlignHCenter
+                                font.family: "Segoe UI"
+                                anchors.rightMargin: 5
+                                leftPadding: 8
+                                anchors.leftMargin: 5
+                                font.capitalization: Font.Capitalize
+                            }
+
+                            Rectangle{
+                                height: 1
+                                color: "#98a6ff"
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.bottom: parent.bottom
+                                anchors.rightMargin: 0
+                                anchors.leftMargin: 0
+                                anchors.bottomMargin: -5
+                            }
                         }
                     }
                 }
@@ -346,6 +416,8 @@ Item {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: apptimebox.bottom
+                    anchors.leftMargin: 25
+                    anchors.topMargin: 10
                     anchors.rightMargin: 15
                     Text {
                         id: text8
@@ -561,7 +633,7 @@ Item {
                             }
 
                             delegate: facultyTableDelegate
-                            model: 4
+                            model: 9
 
                             Component{
                                 id: facultyTableDelegate
@@ -897,11 +969,12 @@ Item {
                 }
 
                 ListView {
-                    id: listView1
+                    id: taskList
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: text18.bottom
                     anchors.bottom: parent.bottom
+                    spacing: 15
                     anchors.rightMargin: 15
                     anchors.leftMargin: 15
                     anchors.bottomMargin: 15
@@ -915,6 +988,75 @@ Item {
                             implicitHeight: 100
                             radius: width / 2
                             color: tasksScrollBar.pressed ? "#c9d5ff" : "#a5b1ff"
+                        }
+                    }
+
+                    delegate: taskTableDelegate
+                    model: 6
+
+                    Component{
+                        id: taskTableDelegate
+                        Rectangle {
+                            id: dlgtBG
+                            width: taskList.width
+                            height: dlgtFaculty.height
+                            color: "#00000000"
+                            radius: 8
+
+                            Text {
+                                id: dlgtFaculty
+                                height: implicitHeight
+                                color: "#111111"
+                                text: qsTr("Jun Rangie Obispo")
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.left
+                                anchors.right: toolSeparator1.left
+                                font.pixelSize: 15
+                                horizontalAlignment: Text.AlignHCenter
+                                wrapMode: Text.Wrap
+                                anchors.leftMargin: 5
+                                anchors.rightMargin: 5
+                                font.family: "Segoe UI"
+                                font.capitalization: Font.Capitalize
+                            }
+
+                            ToolSeparator {
+                                id: toolSeparator1
+                                x: 171
+                                visible: false
+                                anchors.top: parent.top
+                                anchors.bottom: parent.bottom
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                anchors.bottomMargin: 0
+                                anchors.topMargin: 0
+                            }
+
+                            Text {
+                                id: dlgtFacultyStatus
+                                color: "#111111"
+                                text: qsTr("In")
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: toolSeparator1.right
+                                anchors.right: parent.right
+                                font.pixelSize: 15
+                                horizontalAlignment: Text.AlignHCenter
+                                font.family: "Segoe UI"
+                                anchors.rightMargin: 5
+                                leftPadding: 8
+                                anchors.leftMargin: 5
+                                font.capitalization: Font.Capitalize
+                            }
+
+                            Rectangle{
+                                height: 1
+                                color: "#98a6ff"
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.bottom: parent.bottom
+                                anchors.rightMargin: 0
+                                anchors.leftMargin: 0
+                                anchors.bottomMargin: -5
+                            }
                         }
                     }
                 }
@@ -943,7 +1085,7 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}D{i:10}D{i:21}D{i:20}
-D{i:41}D{i:42}D{i:40}D{i:62}D{i:61}
+    D{i:0;autoSize:true;formeditorZoom:0.5;height:720;width:1280}D{i:16}D{i:27}D{i:26}
+D{i:47}D{i:48}D{i:46}D{i:68}D{i:67}
 }
 ##^##*/
